@@ -12,7 +12,7 @@ class IndexController extends AbstractActionController
         $view->setTerminal(true);
         return $view;
     }
-    public function registerAction()
+    public function forgotPasswordAction()
     {
         return new ViewModel();
     }
@@ -20,4 +20,11 @@ class IndexController extends AbstractActionController
     {
         return new ViewModel();
     }
+    public function registerAction()
+    {
+        $view = new ViewModel();
+        $view->setTerminal(true);
+        return $view;
+    }
+    
 }

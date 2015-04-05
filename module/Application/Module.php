@@ -18,6 +18,12 @@ class Module
         }, 100);
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
+        
+        
+        $eventManager->attach(MvcEvent::EVENT_DISPATCH_ERROR, function(MvcEvent $event) {
+            $viewModel = $event->getViewModel();
+            $viewModel->setTemplate('layout/404');
+        }, -200);
     }
     public function getConfig()
     {
