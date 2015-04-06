@@ -2,6 +2,7 @@
 namespace Users\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
+use Zend\View\Renderer\PhpRenderer;
 use Zend\View\Model\ViewModel;
 
 use Users\Model\Users;
@@ -23,27 +24,29 @@ class IndexController extends AbstractActionController
             $postData = $request-> getPost();
             if( $postData['rememberMe'] == 'Yes')
             {
-                echo $email = $postData['email'];
-                echo $password = $postData['password'];
+                $email = $postData['email'];
+                $password = $postData['password'];
                 
                 $users = new Users();
                 $users-> exchangeArray($postData);
                       
                 $usersTable = $this->getServiceLocator()-> get('Users\Model\UsersTable');
-                echo $row = $usersTable-> authenticate($email,$password);
-                die;
+                $row = $usersTable-> authenticate($email,$password);
+                
+                $renderer = $this->serviceLocator->get('Zend\View\Renderer\RendererInterface');
+                
+                if( $row->userTypeId == 4 )
+                {                    
+                    $this->redirect()->toUrl($renderer->basePath('users/index/dashboard-super-admin'));
+                }
             }
         }
-        
-        $view = new ViewModel();
-        $view->setTerminal(true);
-        return $view;
     }
     public function forgotPasswordAction()
     {
         return new ViewModel();
     }
-    public function dashboardAction()
+    public function dashboardSuperAdminAction()
     {
         return new ViewModel();
     }

@@ -22,8 +22,6 @@ class UsersTable
     
     public function authenticate($email,$password) 
     {
-        echo 'hello';
-        
         $rowset = $this->tableGateway->select(array( 'email' => $email, 'password' => $password ));
         $row = $rowset->current();
         if (!$row) 

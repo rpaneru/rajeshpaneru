@@ -1,8 +1,12 @@
 <?php
 namespace Users;
 
+use Zend\Mvc\MvcEvent;
+use Zend\Mvc\ModuleRouteListener;
+
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
+
 
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\TableGateway\TableGateway;
