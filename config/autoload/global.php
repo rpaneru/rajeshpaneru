@@ -1,5 +1,6 @@
 <?php
 return array(
+    
     'db' => array(
         'driver'         => 'Pdo',
         'dsn'            => 'mysql:dbname=rajeshpaneru;host=localhost',
@@ -12,5 +13,9 @@ return array(
             'Zend\Db\Adapter\Adapter'
                     => 'Zend\Db\Adapter\AdapterServiceFactory',
         ),
+    ),
+    'module_layouts' => array(
+        'Application' => 'layout/application.phtml',
+        'Users' => 'layout/users.phtml'
     )
 );
