@@ -265,27 +265,3 @@ San Francisco, CA 94107<br>
 </div>	
 </div>
 </section>
-
-<script>
-$(document).ready(function(){
-    
-    $('#contact-form').validate({
-        rules:{
-            name: "required",
-            email: {
-                    required: true,
-                    email: true
-            },
-            subject: "required",
-            message: "required"
-        },
-        message: {
-            name: "Name is required.",
-            email: "Please enter a valid email address.",
-            subject: "Subject is required.",
-            message: "Message is required."
-        }
-    });
-    
-});
-</script>
