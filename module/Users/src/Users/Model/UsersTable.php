@@ -19,17 +19,6 @@ class UsersTable
     {
         $this->tableGateway = $tableGateway;
     }
-    
-    public function authenticate($email,$password) 
-    {
-        $rowset = $this->tableGateway->select(array( 'email' => $email, 'password' => $password ));
-        $row = $rowset->current();
-        if (!$row) 
-        {
-            $row = 0;
-        }
-        return $row;
-    }
 }
 
 ?>

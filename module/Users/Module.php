@@ -7,9 +7,11 @@ use Zend\Mvc\ModuleRouteListener;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
 
-
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\TableGateway\TableGateway;
+
+use Zend\Authentication\AuthenticationService;
+use Zend\Authentication\Adapter\DbTable as DbTableAuthAdapter;
 
 use Users\Model\Users;
 use Users\Model\UsersTable;
@@ -49,7 +51,23 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
     public function getServiceConfig()
     {
         return array(
-           'factories' => array(                
+           'factories' => array( 
+               
+                'AuthService' => function($sm)
+                {
+                    $dbAdapter = $sm-> get('Zend\Db\Adapter\Adapter');
+                    
+                    $dbTableAuthAdapter = new DbTableAuthAdapter($dbAdapter,'users','email','password','MD5(?)');
+                    $authService = new AuthenticationService();
+                    $authService-> setAdapter($dbTableAuthAdapter);
+                    $authService-> setStorage($sm->get('Users\Model\RPAuthStorage'));
+
+                    return $authService;
+                },
+                'Users\Model\RPAuthStorage' => function($sm)
+                {
+                    return new \Users\Model\RPAuthStorage('RP');
+                },
                 'Users\Model\UsersTable' => function($sm)
                 {
                     $tableGateway = $sm->get('UsersTableGateway');

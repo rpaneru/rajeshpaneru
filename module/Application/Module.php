@@ -2,6 +2,10 @@
 namespace Application;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
+
+use Zend\Authentication\AuthenticationService;
+use Zend\Authentication\Adapter\DbTable as DbTableAuthAdapter;
+
 class Module
 {
     public function onBootstrap(MvcEvent $e)

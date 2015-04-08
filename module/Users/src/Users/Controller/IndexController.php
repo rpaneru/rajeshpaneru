@@ -5,15 +5,16 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Renderer\PhpRenderer;
 use Zend\View\Model\ViewModel;
 
-use Zend\Http\Request;
-use Zend\Authentication\AuthenticationService;
-use Zend\Authentication\Adapter\DbTable as DbTableAuthAdapter;
-
 use Users\Model\Users;
 use Users\Model\UsersTable;
+use Users\Model\RPAuthStorage;
+
+use Zend\Http\Header\SetCookie;
 
 class IndexController extends AbstractActionController
 {
+    protected $authservice;
+    
     public function getAuthService() 
     {
         if (!$this->authservice) 
@@ -25,12 +26,25 @@ class IndexController extends AbstractActionController
     
     public function loginAction()
     {
-        $view = new ViewModel();
+        $headCookie = $this->getRequest()->getHeaders()->get('Cookie');
+        $email = $headCookie->email;
+
+        $view = new ViewModel( array('email'=> $email ) );
         $view->setTerminal(true);
         return $view;
     }
+    
     public function processLoginAction()
-    {        
+    {      
+        $sm = $this->getServiceLocator();            
+        $renderer = $sm ->get('Zend\View\Renderer\RendererInterface');
+        $auth = $sm-> get('AuthService');
+        
+        if($auth-> hasIdentity())
+        {
+           $auth-> clearIdentity();
+        }
+            
         $request = $this->getRequest(); 
         if($request-> isPost())
         {
@@ -39,63 +53,51 @@ class IndexController extends AbstractActionController
             $email = $postData['email'];
             $password = $postData['password'];
 
-//            $users = new Users();
-//            $users-> exchangeArray($postData);
-//
-//            $usersTable = $this->getServiceLocator()-> get('Users\Model\UsersTable');
-//            $row = $usersTable-> authenticate($email,$password);
-            
-            
-            $sm = $this->getServiceLocator();
-            
             $this->getAuthService()->getAdapter()
-                    ->setIdentity($this->getRequest()->getPost('email'))
-                    ->setCredential($this->getRequest()->getPost('password'));
-            echo 'hello';
+                    ->setIdentity($email)
+                    ->setCredential($password);
+
             $result = $this->getAuthService()->authenticate();
-            
-            var_dump($result);            
-            echo '<br />';
             
             if ($result->isValid())
             {
-                if( $postData['rememberMe'] == 'Yes')
-                { 
-                    setcookie('rp_email', $email, time() + 86400, '/');
-                    setcookie('rp_password', $password, time() + 86400, '/');
+                $data = $auth -> getAdapter()-> getResultRowObject(null,'password');
+                $auth->getStorage()->write($data);
+
+                if( $postData['rememberMe'] == 'Yes' )
+                {   
+                    $cookieEmail = new  \Zend\Http\Header\SetCookie('email', $auth-> getIdentity()-> email, time() + 60 * 60 , '/');
+                    $this->getResponse()->getHeaders()->addHeader($cookieEmail);
                 }  
                 else 
-                {
-                    setcookie('rp_email', '', -1);
-                    unset($_COOKIE['rp_email']);
-                    setcookie('rp_password', '', -1);
-                    unset($_COOKIE['rp_password']);
+                {                    
+                    /*delete cookie*/
+                }
+                
+                
+                if( $auth-> getIdentity()-> userTypeId == 4 )
+                {                    
+                    $url = $renderer->basePath('users/index/dashboard-super-admin');
+                    return $this->redirect()->toUrl( $url );
                 }
             }
-
-            $_COOKIE['rp_email'];
-            echo '<br />';
-            $_COOKIE['rp_password'];
-            echo '<br />';
-            
-            
-            $renderer = $this->serviceLocator->get('Zend\View\Renderer\RendererInterface');
-            
-            if( $row->userTypeId == 4 )
+            else
             {                    
-                //$this->redirect()->toUrl($renderer->basePath('users/index/dashboard-super-admin'));
+                $url = $renderer->basePath('users/index/login');
+                return $this->redirect()->toUrl( $url );
             }
-            
-        }
+        }                
     }
     public function forgotPasswordAction()
     {
         return new ViewModel();
     }
+    
     public function dashboardSuperAdminAction()
     {
         return new ViewModel();
     }
+    
     public function registerAction()
     {
         $view = new ViewModel();
