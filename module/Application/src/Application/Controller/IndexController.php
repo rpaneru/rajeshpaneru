@@ -13,7 +13,6 @@ class IndexController extends AbstractActionController
         //$sm = $this->getServiceLocator();
         //$session = new Container('rp');
         //echo $session_id = $sm->get('SessionManager')->getId();
-
         return new ViewModel();
     }
 }
