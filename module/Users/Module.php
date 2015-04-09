@@ -60,13 +60,8 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
                     $dbTableAuthAdapter = new DbTableAuthAdapter($dbAdapter,'users','email','password','MD5(?)');
                     $authService = new AuthenticationService();
                     $authService-> setAdapter($dbTableAuthAdapter);
-                    $authService-> setStorage($sm->get('Users\Model\RPAuthStorage'));
 
                     return $authService;
-                },
-                'Users\Model\RPAuthStorage' => function($sm)
-                {
-                    return new \Users\Model\RPAuthStorage('RP');
                 },
                 'Users\Model\UsersTable' => function($sm)
                 {

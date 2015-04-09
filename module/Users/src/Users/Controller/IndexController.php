@@ -56,16 +56,19 @@ class IndexController extends AbstractActionController
             $this->getAuthService()->getAdapter()
                     ->setIdentity($email)
                     ->setCredential($password);
-
-            $result = $this->getAuthService()->authenticate();
             
+            $result = $this->getAuthService()->authenticate();
+            var_dump($this->getAuthService()->authenticate());
+
             if ($result->isValid())
             {
+
                 $data = $auth -> getAdapter()-> getResultRowObject(null,'password');
                 $auth->getStorage()->write($data);
 
                 if( $postData['rememberMe'] == 'Yes' )
                 {   
+
                     $cookieEmail = new  \Zend\Http\Header\SetCookie('email', $auth-> getIdentity()-> email, time() + 60 * 60 , '/');
                     $this->getResponse()->getHeaders()->addHeader($cookieEmail);
                 }  
@@ -74,7 +77,7 @@ class IndexController extends AbstractActionController
                     /*delete cookie*/
                 }
                 
-                
+
                 if( $auth-> getIdentity()-> userTypeId == 4 )
                 {                    
                     $url = $renderer->basePath('users/index/dashboard-super-admin');
@@ -98,11 +101,11 @@ class IndexController extends AbstractActionController
         $sm = $this->getServiceLocator();            
         $renderer = $sm ->get('Zend\View\Renderer\RendererInterface');
         $auth = $sm-> get('AuthService');        
-        if(! $auth-> hasIdentity())
-        {
-            $url = $renderer->basePath('users/index/login');
-            return $this->redirect()->toUrl( $url );
-        }
+//        if(! $auth-> hasIdentity())
+//        {
+//            $url = $renderer->basePath('users/index/login');
+//            return $this->redirect()->toUrl( $url );
+//        }
         
         return new ViewModel();
     }
