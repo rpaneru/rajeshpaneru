@@ -115,8 +115,10 @@ class IndexController extends AbstractActionController
         $addressId = $auth-> getIdentity()-> addressId;
         $helper = $sm->get('viewhelpermanager')->get('getValue');
         $addressDetails = $helper('addresses', 'address', 'id', $addressId);         */
-        
-        return new ViewModel( array('userDetails' => $auth-> getIdentity()) );
+//        $this->layout()->setVariables(array(
+//            'userDetails' => $auth-> getIdentity()
+//        ));
+        return new ViewModel( array() );
     }
     
     public function registerAction()

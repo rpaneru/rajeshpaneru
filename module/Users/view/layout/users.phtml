@@ -18,9 +18,7 @@
         <link href="<?php echo $this->basePath();?>/admin/plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" />
         <link href="<?php echo $this->basePath();?>/admin/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />    
         
-        
-        
-        
+
         <script src="<?php echo $this->basePath();?>/admin/plugins/jQuery/jQuery-2.1.3.min.js"></script>
         <script>
           $.widget.bridge('uibutton', $.ui.button);
@@ -45,14 +43,20 @@
 
     <body class="skin-blue">
              
-        <div class="wrapper">       
-            <?php echo $this->render('partial/topMenu'); ?>
+        <div class="wrapper">    
+            
+            <?php             
+            var_dump($this->userDetails);
+            ?>
+            <?php //echo $this->render('partial/topMenu', array('userDetails'=>$userDetails) ); ?>
     
             <?php echo $this->render('partial/leftMenu'); ?>
       
             <?php echo $this->content; ?>     
       
             <?php echo $this-> partial('partial/footer');?>
+            
         </div>        
     </body>
+
 </html>
