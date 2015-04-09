@@ -29,10 +29,12 @@ class Module
             $viewModel->setTemplate('layout/404');
         }, -200);
     }
+    
     public function getConfig()
     {
         return include __DIR__ . '/config/module.config.php';
     }
+    
     public function getAutoloaderConfig()
     {
         return array(
@@ -40,6 +42,24 @@ class Module
                 'namespaces' => array(
                     __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
                 ),
+            ),
+        );
+    }
+    
+    public function getViewHelperConfig()
+    {
+        return array(
+            'factories' => array(
+                'getValue' => function ($sm) {
+                    $locator = $sm->getServiceLocator();
+                    $viewHelper = new View\Helper\GetValue($locator->get('Zend\Db\Adapter\Adapter'));
+                    return $viewHelper;
+                },
+                'getRowCount' => function ($sm) {
+                    $locator = $sm->getServiceLocator();
+                    $viewHelper = new View\Helper\GetRowCount($locator->get('Zend\Db\Adapter\Adapter'));
+                    return $viewHelper;
+                }       
             ),
         );
     }
