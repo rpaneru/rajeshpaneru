@@ -70,7 +70,6 @@ class IndexController extends AbstractActionController
 
                 if( $postData['rememberMe'] == 'Yes' )
                 {   
-
                     $cookieEmail = new  \Zend\Http\Header\SetCookie('email', $auth-> getIdentity()-> email, time() + 60 * 60 , '/');
                     $this->getResponse()->getHeaders()->addHeader($cookieEmail);
                 }  

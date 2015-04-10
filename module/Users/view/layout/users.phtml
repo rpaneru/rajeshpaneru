@@ -45,10 +45,7 @@
              
         <div class="wrapper">    
             
-            <?php             
-            var_dump($this->userDetails);
-            ?>
-            <?php //echo $this->render('partial/topMenu', array('userDetails'=>$userDetails) ); ?>
+            <?php echo $this->render('partial/topMenu', array('userDetails'=>$userDetails) ); ?>
     
             <?php echo $this->render('partial/leftMenu'); ?>
       
