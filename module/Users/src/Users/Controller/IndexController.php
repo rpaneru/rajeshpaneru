@@ -27,7 +27,15 @@ class IndexController extends AbstractActionController
     public function loginAction()
     {
         $headCookie = $this->getRequest()->getHeaders()->get('Cookie');
-        $email = $headCookie->email;
+        
+        if(isset($headCookie->email))
+        {
+        $email = $headCookie->email;    
+        }
+        else
+        {
+            $email = '';
+        }
 
         $view = new ViewModel( array('email'=> $email ) );
         $view->setTerminal(true);
