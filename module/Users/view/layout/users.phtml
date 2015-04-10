@@ -47,7 +47,7 @@
             
             <?php echo $this->render('partial/topMenu', array('userImagePath'=> $this->userImagePath,'userDetails'=>$userDetails) ); ?>
     
-            <?php echo $this->render('partial/leftMenu'); ?>
+            <?php echo $this->render('partial/leftMenu', array('userImagePath'=> $this->userImagePath,'userDetails'=>$userDetails) ); ?>
       
             <?php echo $this->content; ?>     
       
