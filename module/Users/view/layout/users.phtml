@@ -45,14 +45,14 @@
              
         <div class="wrapper">    
             
-            <?php echo $this->render('partial/topMenu', array('userDetails'=>$userDetails) ); ?>
+            <?php echo $this->render('partial/topMenu', array('userImagePath'=> $this->userImagePath,'userDetails'=>$userDetails) ); ?>
     
             <?php echo $this->render('partial/leftMenu'); ?>
       
             <?php echo $this->content; ?>     
       
             <?php echo $this-> partial('partial/footer');?>
-            
+
         </div>        
     </body>
 

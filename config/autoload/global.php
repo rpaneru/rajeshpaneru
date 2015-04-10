@@ -28,5 +28,7 @@ return array(
         'Application' => 'layout/application.phtml',
         'Users' => 'layout/users.phtml'
     ),
-    
+    'custom_paths' => array(
+        'userImagePath' => 'http://rajeshpaneru/user_images/'
+    ),
 );

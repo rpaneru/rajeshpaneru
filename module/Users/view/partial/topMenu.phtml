@@ -189,12 +189,12 @@ Make beautiful transitions
 </li>
 <li class="dropdown user user-menu">
 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-<img src="<?php echo $this->basePath();?>/user_images/<?php echo $this->userDetails->image;?>" class="user-image" alt="User Image"/>
+<img src="<?php echo $this->userImagePath. $this->userDetails->image;?>" class="user-image" alt="User Image"/>
 <span class="hidden-xs"><?php echo $this->userDetails->name;?></span>
 </a>
 <ul class="dropdown-menu">
 <li class="user-header">
-<img src="<?php echo $this->basePath();?>/user_images/<?php echo $this->userDetails->image;?>" class="img-circle" alt="User Image" />
+<img src="<?php echo $this->userImagePath. $this->userDetails->image;?>" class="img-circle" alt="User Image" />
 <p>
 <?php echo $this->userDetails->name;?>
 <small>Member since <?php echo $this->userDetails->createdDateTime;?></small>
