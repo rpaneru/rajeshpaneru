@@ -75,7 +75,8 @@ class IndexController extends AbstractActionController
                 }  
                 else 
                 {                    
-                    /*delete cookie*/
+                    $cookieEmail = new \Zend\Http\Header\SetCookie('email','',strtotime('-1 Year', time()), '/' );
+                    $this->getResponse()->getHeaders()->addHeader($cookieEmail);
                 }
                 
 
@@ -106,17 +107,7 @@ class IndexController extends AbstractActionController
         {
             $url = $renderer->basePath('users/index/login');
             return $this->redirect()->toUrl( $url );
-        }        
-        
-        /*$name = $auth-> getIdentity()-> name;
-        $image = $auth-> getIdentity()-> image;
-        $userTypeId = $auth-> getIdentity()-> userTypeId;
-        $addressId = $auth-> getIdentity()-> addressId;
-        $helper = $sm->get('viewhelpermanager')->get('getValue');
-        $addressDetails = $helper('addresses', 'address', 'id', $addressId);         */
-//        $this->layout()->setVariables(array(
-//            'userDetails' => $auth-> getIdentity()
-//        ));
+        }                
         return new ViewModel( array() );
     }
     
@@ -125,6 +116,21 @@ class IndexController extends AbstractActionController
         $view = new ViewModel();
         $view->setTerminal(true);
         return $view;
+    }
+    
+    public function logOutAction()
+    {      
+        $sm = $this->getServiceLocator(); 
+        $renderer = $sm ->get('Zend\View\Renderer\RendererInterface');
+        $auth = $sm-> get('AuthService');
+        
+        if($auth-> hasIdentity())
+        {
+           $auth-> clearIdentity();
+        }
+        
+        $url = $renderer->basePath('users/index/login');
+        return $this->redirect()->toUrl( $url );
     }
     
 }
