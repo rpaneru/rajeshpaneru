@@ -9,11 +9,11 @@
             </div>
         </form>
         <ul class="sidebar-menu">
-            <li><a href="#"><i class="fa fa-circle-o text-danger"></i> Dashboard</a></li>
-            <li><a href="#"><i class="fa fa-circle-o text-danger"></i> Service Groups</a></li>
-            <li><a href="#"><i class="fa fa-circle-o text-warning"></i> Services</a></li>
+            <li><a href="<?php echo $this->basePath();?>/users/index/dashboard-super-admin"><i class="fa fa-circle-o text-danger"></i> Dashboard</a></li>
+            <li><a href="<?php echo $this->basePath();?>/authorization/serviceGoups/list-service-groups"><i class="fa fa-circle-o text-danger"></i> Service Groups</a></li>
+            <li><a href="<?php echo $this->basePath();?>/authorization/services/list-services"><i class="fa fa-circle-o text-warning"></i> Services</a></li>
             <li><a href="#"><i class="fa fa-circle-o text-warning"></i> Authorization</a></li>
-            <li><a href="#"><i class="fa fa-circle-o text-info"></i> Users</a></li>
+            <li><a href="<?php echo $this->basePath();?>/users/index/list-users"><i class="fa fa-circle-o text-info"></i> Users</a></li>
         </ul>
     </section>
 </aside>

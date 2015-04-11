@@ -141,4 +141,11 @@ class IndexController extends AbstractActionController
         return $this->redirect()->toUrl( $url );
     }
     
+    public function listUsersAction()
+    {      
+        $sm = $this->getServiceLocator();
+        $view = new ViewModel();
+        return $view;
+    }
+    
 }

@@ -2,8 +2,18 @@
 namespace Authorization;
 
 use Zend\Mvc\MvcEvent;
+use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
+use Zend\ModuleManager\Feature\ConfigProviderInterface;
+
+use Zend\Db\ResultSet\ResultSet;
+use Zend\Db\TableGateway\TableGateway;
+
+use Zend\Authentication\AuthenticationService;
+use Zend\Authentication\Adapter\DbTable as DbTableAuthAdapter;
+
 use Authorization\Model\AccessControl;
-use Zend\Filter\Word;
+use Authorization\Model\ServiceGoups;
+use Authorization\Model\ServiceGoupsTable;
 
 class Module
 {
@@ -65,6 +75,28 @@ class Module
                 ),
             );
         }
+        
+        public function getServiceConfig()
+    {
+        return array(
+           'factories' => array(                
+                'Authorization\Model\ServiceGoupsTable' => function($sm)
+                {                                        
+                    $dbAdapter = $sm-> get('Zend\Db\Adapter\Adapter');
+                    $tableGateway = $sm->get('ServiceGoupsTableGateway');
+                    $table = new ServiceGoupsTable($dbAdapter,$tableGateway);
+                    return $table;
+                },
+                'ServiceGoupsTableGateway' => function($sm)
+                {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new ServiceGoups());
+                    return new TableGateway('service_groups',$dbAdapter,null,$resultSetPrototype);
+                }
+           ),
+        );
+    }
     
 }
 
