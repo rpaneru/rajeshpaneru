@@ -74,9 +74,10 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
                     return $authService;
                 },
                 'Users\Model\UsersTable' => function($sm)
-                {
+                {                                        
+                    $dbAdapter = $sm-> get('Zend\Db\Adapter\Adapter');
                     $tableGateway = $sm->get('UsersTableGateway');
-                    $table = new UsersTable($tableGateway);
+                    $table = new UsersTable($dbAdapter,$tableGateway);
                     return $table;
                 },
                 'UsersTableGateway' => function($sm)
@@ -85,6 +86,20 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new Users());
                     return new TableGateway('users',$dbAdapter,null,$resultSetPrototype);
+                },
+                'Users\Model\UserLoginHistoryTable' => function($sm)
+                {                                        
+                    $dbAdapter = $sm-> get('Zend\Db\Adapter\Adapter');
+                    $tableGateway = $sm->get('UserLoginHistoryTableGateway');
+                    $table = new UserLoginHistoryTable($dbAdapter,$tableGateway);
+                    return $table;
+                },
+                'UserLoginHistoryTableGateway' => function($sm)
+                {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new UserLoginHistory());
+                    return new TableGateway('User_login_history',$dbAdapter,null,$resultSetPrototype);
                 }
            ),
         );

@@ -1,5 +1,5 @@
 <header class="main-header">
-        <a href="index2.html" class="logo"><b>Admin</b></a>
+        <a href="index2.html" class="logo"><b><?php echo $this->getValue('user_types', 'userType', 'id', $this->userDetails->userTypeId ); ?></b></a>
         <nav class="navbar navbar-static-top" role="navigation">
             <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
                 <span class="sr-only">Toggle navigation</span>
@@ -197,10 +197,10 @@ Make beautiful transitions
 <img src="<?php echo $this->userImagePath. $this->userDetails->image;?>" class="img-circle" alt="User Image" />
 <p>
 <?php echo $this->userDetails->name;?>
-<small>Member since <?php echo $this->userDetails->createdDateTime;?></small>
+<small>Member since <?php echo $this->dateFormatIndia( $this->userDetails->createdDateTime );?></small>
 </p>
 </li>
-<li class="user-body">
+<!--<li class="user-body">
 <div class="col-xs-4 text-center">
 <a href="#">Followers</a>
 </div>
@@ -210,7 +210,7 @@ Make beautiful transitions
 <div class="col-xs-4 text-center">
 <a href="#">Friends</a>
 </div>
-</li>
+</li>-->
 <li class="user-footer">
 <div class="pull-left">
 <a href="#" class="btn btn-default btn-flat">Profile</a>

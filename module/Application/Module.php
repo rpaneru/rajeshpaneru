@@ -64,7 +64,12 @@ class Module
                     $locator = $sm->getServiceLocator();
                     $viewHelper = new View\Helper\GetRowCount($locator->get('Zend\Db\Adapter\Adapter'));
                     return $viewHelper;
-                }       
+                },
+                'dateFormatIndia' => function ($sm) {
+                    $locator = $sm->getServiceLocator();
+                    $viewHelper = new View\Helper\DateFormatIndia();
+                    return $viewHelper;
+                }
             ),
         );
     }
