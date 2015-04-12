@@ -4,5 +4,8 @@
 return array(
     'db' => array(
                 'username' => 'root',
-                'password' => '')
+                'password' => ''
+//                'username' => 'rpaneru1986',
+//                'password' => 'Paneruhello123'
+        )
 );
