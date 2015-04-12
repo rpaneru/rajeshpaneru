@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 06, 2015 at 08:16 PM
+-- Generation Time: Apr 12, 2015 at 10:11 AM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -23,22 +23,53 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `access_control`
+--
+
+CREATE TABLE IF NOT EXISTS `access_control` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `serviceId` int(11) NOT NULL,
+  `userTypeId` enum('1','2','3','4') NOT NULL,
+  `description` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+
+--
+-- Dumping data for table `access_control`
+--
+
+INSERT INTO `access_control` (`id`, `serviceId`, `userTypeId`, `description`) VALUES
+(1, 1, '1', 'Home page is visible for all users.'),
+(2, 2, '1', 'Login Page is visible for everyone'),
+(3, 3, '1', 'Authontication should be process  for everyone'),
+(4, 4, '4', 'Super Admin dashboard will be visible only for super admin');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `addresses`
 --
 
 CREATE TABLE IF NOT EXISTS `addresses` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `address` text NOT NULL,
-  `city` int(11) NOT NULL,
+  `city` text NOT NULL,
   `district` text NOT NULL,
-  `state` int(11) NOT NULL,
+  `stateId` int(11) NOT NULL,
   `countryId` int(11) NOT NULL,
   `zipCode` int(6) NOT NULL,
   `createdDateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `createdBy` text NOT NULL,
   `sessionId` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `addresses`
+--
+
+INSERT INTO `addresses` (`id`, `address`, `city`, `district`, `stateId`, `countryId`, `zipCode`, `createdDateTime`, `createdBy`, `sessionId`) VALUES
+(1, 'Subash Nagar', 'Haldwani', 'Nainital', 27, 110, 263139, '2015-04-09 15:24:05', '', '');
 
 -- --------------------------------------------------------
 
@@ -391,7 +422,17 @@ CREATE TABLE IF NOT EXISTS `services` (
   `controller` text NOT NULL,
   `action` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+
+--
+-- Dumping data for table `services`
+--
+
+INSERT INTO `services` (`id`, `serviceGroupId`, `name`, `controller`, `action`) VALUES
+(1, 1, 'Home Page', 'Application\\Controller\\Index', 'index'),
+(2, 1, 'LogIn Page', 'Users\\Controller\\Index', 'login'),
+(3, 1, 'Process Login Page', 'Users\\Controller\\Index', 'process-login'),
+(4, 0, 'Super Admin Dashboard', 'Users\\Controller\\Index', 'dashboard-super-admin');
 
 -- --------------------------------------------------------
 
@@ -404,7 +445,14 @@ CREATE TABLE IF NOT EXISTS `service_groups` (
   `name` text NOT NULL,
   `description` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `service_groups`
+--
+
+INSERT INTO `service_groups` (`id`, `name`, `description`) VALUES
+(1, 'Common', 'Services under this service group has been allotted for everyone');
 
 -- --------------------------------------------------------
 
@@ -422,7 +470,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `email` text NOT NULL,
   `password` text NOT NULL,
   `addressId` int(11) NOT NULL,
-  `image` int(11) NOT NULL,
+  `image` text NOT NULL,
   `userTypeId` int(1) NOT NULL,
   `status` enum('1','0') NOT NULL DEFAULT '1',
   `createdDateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -436,7 +484,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `dob`, `gernder`, `mobile`, `fax`, `email`, `password`, `addressId`, `image`, `userTypeId`, `status`, `createdDateTime`, `createdBy`, `sessionId`) VALUES
-(1, 'Rajesh Paneru', '1986-06-03', 'Male', 2147483647, '', 'rpaneru1986@gmail.com', 'rpaneru', 0, 0, 4, '1', '2015-04-05 18:00:32', '', '');
+(1, 'Rajesh Paneru', '1986-06-03', 'Male', 2147483647, '', 'rpaneru1986@gmail.com', '2452aa0a0be563260021b52622dcc360', 1, 'rajesh.png', 4, '1', '2015-04-05 18:00:32', '', '');
 
 -- --------------------------------------------------------
 
@@ -455,20 +503,6 @@ CREATE TABLE IF NOT EXISTS `user_login_history` (
   `screenSize` text NOT NULL,
   `logInDateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `logOutDateTime` datetime NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `user_service_access_control`
---
-
-CREATE TABLE IF NOT EXISTS `user_service_access_control` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `serviceId` int(11) NOT NULL,
-  `userType` enum('Guest','Registered User','Administrator','Super Administrator') NOT NULL,
-  `description` text NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 

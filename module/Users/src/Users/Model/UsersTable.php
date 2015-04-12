@@ -21,6 +21,19 @@ class UsersTable
         $this-> dbAdapter = $dbAdapter;
         $this-> tableGateway = $tableGateway;
     }
+    public function getUsersDetails($email)
+    {
+        $email = (string) $email;            
+        $resultSet = $this-> tableGateway-> select(function(Select $select) use ($email){
+            $select-> columns(array('name','email','dob','mobile','gernder','image','status'));
+            $select-> where(array(
+                'email' => $email,
+            ));
+            $select->order('id desc');
+            //echo $select->getSqlString($this-> tableGateway->getAdapter()->getPlatform());
+       });
+       return $resultSet->buffer();                  
+    }
 }
 
 ?>

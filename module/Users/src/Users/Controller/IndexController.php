@@ -144,7 +144,12 @@ class IndexController extends AbstractActionController
     public function listUsersAction()
     {      
         $sm = $this->getServiceLocator();
-        $view = new ViewModel();
+        $auth = $sm-> get('AuthService');
+        $email = $auth->getIdentity()->email;
+        
+        $userDetails = $this->getServiceLocator()->get('Users\Model\UsersTable')->getUsersDetails( $email );
+        
+        $view = new ViewModel(array( 'userDetails' => $userDetails ));
         return $view;
     }
     
