@@ -5,15 +5,17 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Renderer\PhpRenderer;
 use Zend\View\Model\ViewModel;
 use Zend\Http\Header\SetCookie;
+use Zend\Db\Adapter\Adapter;
 
 use Users\Model\Users;
 use Users\Model\UsersTable;
 use Users\Model\RPAuthStorage;
 
-use Users\Form\UserSignupForm;
+use Users\Form\SignupForm;
 
 class IndexController extends AbstractActionController
 {
+    protected $adapter;
     protected $authservice;
     
     public function getAuthService() 
@@ -155,11 +157,11 @@ class IndexController extends AbstractActionController
     }
     public function addNewUserAction()
     {      
-        $sm = $this->getServiceLocator();
-        $dbAdapter = $this-> serviceLocator-> get('db');
+        $sm = $this->getServiceLocator(); 
+        $dbAdapter = $sm -> get('Zend\Db\Adapter\Adapter'); 
         $form = new SignupForm($dbAdapter);
         
-        $view = new ViewModel();
+        $view = new ViewModel( array('form' => $form) );
         return $view;
     }
     
