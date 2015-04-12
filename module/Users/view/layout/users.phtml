@@ -37,14 +37,15 @@
         <script src="<?php echo $this->basePath();?>/admin/plugins/slimScroll/jquery.slimscroll.min.js" type="text/javascript"></script>
         <script src='<?php echo $this->basePath();?>/admin/plugins/fastclick/fastclick.min.js'></script>
         <script src="<?php echo $this->basePath();?>/admin/dist/js/app.min.js" type="text/javascript"></script>
+        <script src="<?php echo $this->basePath();?>/js/exportTableToCSV.js" type="text/javascript"></script>        
         
 <!--        <script src="<?php echo $this->basePath();?>/admin/dist/js/pages/dashboard.js" type="text/javascript"></script>
         <script src="<?php echo $this->basePath();?>/admin/dist/js/demo.js" type="text/javascript"></script> 
-        <script src="<?php echo $this->basePath();?>/js/jquery.validate.min.js"></script>        -->
+        <script src="<?php echo $this->basePath();?>/js/jquery.validate.min.js"></script>        --> 
     </head>
 
     <body class="skin-blue">
-             
+                
         <div class="wrapper">    
             
             <?php echo $this->render('partial/topMenu', array('userDetails'=>$userDetails) ); ?>
@@ -55,7 +56,9 @@
       
             <?php echo $this-> partial('partial/footer');?>
 
-        </div>        
+        </div>
+                
+        
     </body>
 
 </html>

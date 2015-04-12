@@ -4,12 +4,13 @@ namespace Users\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Renderer\PhpRenderer;
 use Zend\View\Model\ViewModel;
+use Zend\Http\Header\SetCookie;
 
 use Users\Model\Users;
 use Users\Model\UsersTable;
 use Users\Model\RPAuthStorage;
 
-use Zend\Http\Header\SetCookie;
+use Users\Form\UserSignupForm;
 
 class IndexController extends AbstractActionController
 {
@@ -150,6 +151,15 @@ class IndexController extends AbstractActionController
         $userDetails = $this->getServiceLocator()->get('Users\Model\UsersTable')->getUsersDetails( $email );
         
         $view = new ViewModel(array( 'userDetails' => $userDetails ));
+        return $view;
+    }
+    public function addNewUserAction()
+    {      
+        $sm = $this->getServiceLocator();
+        $dbAdapter = $this-> serviceLocator-> get('db');
+        $form = new SignupForm($dbAdapter);
+        
+        $view = new ViewModel();
         return $view;
     }
     
