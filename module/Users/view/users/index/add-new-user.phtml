@@ -2,14 +2,13 @@
     <section class="content">
         <div class="row">
 
-            <div class="box">
-                    <div class="box-header">
-                        <div class="col-xs-8">
+            <div class="col-sm-8">
+
+                    <div class="box box-primary">
+                        <div class="box-header">
                             <h3 class="box-title">Add New User Form</h3>
-                        </div>
-                    </div>
-                
-                <div class="box-body">
+                        </div> 
+
                         <?php
                         $form = $this->form;
                         $form->prepare();
@@ -18,14 +17,38 @@
                         foreach ($form as $element) :
                         ?>
                         <div class="form-group">
-                            <label><?php echo $element-> getLabel();?></label>
-                            <?php echo $this->formElement($element);?>
+                            <label class="control-label col-sm-4"><?php echo $element-> getLabel();?></label>
+                            <div class="col-sm-8"><?php echo $this->formElement($element);?></div>
                         </div>
                         <?php
                         endforeach;
                         echo $this->form()->closeTag();
                         ?>
-                </div>
+                        
+<!--                        <form class="form-horizontal" role="form">
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Email:</label>
+                                <div class="col-sm-8">
+                                    <input type="email" class="form-control" placeholder="Enter email">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Password:</label>
+                                <div class="col-sm-8"> 
+                                    <input type="password" class="form-control" placeholder="Enter password">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-4"></div>
+                                <div class="col-sm-8">
+                                    <button type="submit" class="btn btn-default">Submit</button>
+                                </div>
+                            </div>
+                        </form>  -->
+
+                    </div>
+
             </div>
 
         </div>
