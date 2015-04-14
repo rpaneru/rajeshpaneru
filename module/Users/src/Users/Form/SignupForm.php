@@ -82,7 +82,6 @@ class SignupForm extends Form implements InputFilterProviderInterface
                 'attributes' => array(                                                     
                                 'id' => 'fax',
                                 'class' => 'form-control',
-                                'required' => 'true',
                                 'placeholder' => 'Fax'
                             ),
                 'options' => array(
@@ -130,28 +129,6 @@ class SignupForm extends Form implements InputFilterProviderInterface
                             'label' => 'Profile Picture',
                    )
                 ));      
-
-                
-                
-        $this->add(array(                           
-           'name' => 'state',
-           'type' => 'Select',
-           'attributes' => array(
-                    'required' => 'true',
-                    'id' => 'state',            
-                    'class' => 'form-control'
-                ),
-                'options' => array(
-                    'label' => 'State',
-                    'empty_option' => 'Choose:',
-                )
-       ));
-                
-                
-
-            
-            
-
             
             
            $this->add(array(                           
@@ -219,19 +196,19 @@ class SignupForm extends Form implements InputFilterProviderInterface
           )
        )); 
        
-                   $this->add(array(
-                    'name' => 'district',
-                    'type' => 'Text',
-                    'attributes' => array(                                                 
-                            'id' => 'district',
-                            'class' => 'form-control',
-                            'required' => 'true',
-                            'placeholder' => 'District'
-                            ),
-                    'options' => array(
-                                    'label' => 'District'
-                            )
-                ));
+            $this->add(array(
+             'name' => 'district',
+             'type' => 'Text',
+             'attributes' => array(                                                 
+                     'id' => 'district',
+                     'class' => 'form-control',
+                     'required' => 'true',
+                     'placeholder' => 'District'
+                     ),
+             'options' => array(
+                             'label' => 'District'
+                     )
+         ));
        
            $this->add(array(                           
            'name' => 'state',
@@ -286,13 +263,26 @@ class SignupForm extends Form implements InputFilterProviderInterface
                    'label' => 'Accept Term',
           )
        ));
+        
+        $this-> add(array(
+            'name' => 'submit',
+            'type' => 'submit',
+            'attributes' => array(
+                'id' => 'submit', 
+                'class' => 'btn btn-primary',
+                'value' => 'Add New User'
+            ),
+            'options' => array(
+                   'label' => '',
+            )
+        ));
                 
 
-	}
+    }
         
-        public function getInputFilterSpecification() {
-            return array(
-            );
-        }
+    public function getInputFilterSpecification() {
+        return array(
+        );
+    }
         
 }

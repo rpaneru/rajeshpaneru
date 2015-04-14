@@ -112,13 +112,12 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
                     $statesTable = new TableGateway('indian_states',$dbAdapter);
                     $rowSet = $statesTable->select();
                     $result = array();
-                    $result[""] = "--Select--";
                     foreach ($rowSet as $row)
                     {
                             $result[$row['id']] = $row['name'];		
                     }		
                     asort($result);
-                    $states = $form->get('states');	 
+                    $states = $form->get('indian_states');	 
                     $states->setValueOptions($result);
                     
                     return $form;
