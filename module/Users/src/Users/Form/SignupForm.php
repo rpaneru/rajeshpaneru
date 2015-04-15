@@ -20,7 +20,7 @@ class SignupForm extends Form implements InputFilterProviderInterface
                 'attributes' => array(                                                            
                                 'id' => 'name',
                                 'class' => 'form-control',
-                                'required' => 'true',
+                                //'required' => 'true',
                                 'placeholder' => 'Name'
                             ),
                 'options' => array(
@@ -28,7 +28,7 @@ class SignupForm extends Form implements InputFilterProviderInterface
                             )
             ));
             
-            $this->add(array(
+        $this->add(array(
            'name' => 'dob',
            'type' => 'Text',
            'attributes' => array(
@@ -52,12 +52,13 @@ class SignupForm extends Form implements InputFilterProviderInterface
                 'options' => array(
                     'label' => 'Gender',
                     'label_attributes' => array(
-                        'class' => ''
+                    'class' => ''
                     ),
 
                     'value_options' => array(
                         'Male' => 'Male',
-                        'Female' => 'Female'
+                        'Female' => 'Female',
+                        'Other' => 'Other'
                     )
                 )
             ));
@@ -135,7 +136,7 @@ class SignupForm extends Form implements InputFilterProviderInterface
            'name' => 'userTypeId',
            'type' => 'Select',
            'attributes' => array(
-                    'required' => 'true',
+                    //'required' => 'true',
                     'id' => 'userTypeId',            
                     'class' => 'form-control'
                 ),
@@ -150,7 +151,7 @@ class SignupForm extends Form implements InputFilterProviderInterface
                 'name' => 'status',
                 'type' => 'Radio',
                 'attributes' => array(
-                    'required' => 'true',
+                    //'required' => 'true',
                     'value' => '1'
                 ),
                 'options' => array(
@@ -214,7 +215,7 @@ class SignupForm extends Form implements InputFilterProviderInterface
            'name' => 'state',
            'type' => 'Select',
            'attributes' => array(
-                    'required' => 'true',
+                    //'required' => 'true',
                     'id' => 'state',            
                     'class' => 'form-control'
                 ),
@@ -228,7 +229,7 @@ class SignupForm extends Form implements InputFilterProviderInterface
            'name' => 'country',
            'type' => 'Select',
            'attributes' => array(
-                    'required' => 'true',
+                    //'required' => 'true',
                     'id' => 'country',            
                     'class' => 'form-control'
                 ),
@@ -282,6 +283,19 @@ class SignupForm extends Form implements InputFilterProviderInterface
         
     public function getInputFilterSpecification() {
         return array(
+            
+            'name' => array(
+                'required' => 'true',
+                'validators' => array(
+                    array(
+                        'name' => 'NotEmpty',
+                        'options' => array(
+                            'message' => 'Please select name'
+                        )
+                    )
+                )
+            ),
+            
         );
     }
         
