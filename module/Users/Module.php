@@ -16,7 +16,7 @@ use Zend\Authentication\Adapter\DbTable as DbTableAuthAdapter;
 use Users\Model\Users;
 use Users\Model\UsersTable;
 
-use Users\Form\SignupForm;
+use Users\Form\AddNewUserForm;
 
 class Module implements AutoloaderProviderInterface, ConfigProviderInterface
 {
@@ -103,11 +103,11 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
                     $resultSetPrototype->setArrayObjectPrototype(new UserLoginHistory());
                     return new TableGateway('User_login_history',$dbAdapter,null,$resultSetPrototype);
                 },
-                'Users\Form\SignupForm' => function($sm)
+                'Users\Form\AddNewUserForm' => function($sm)
                 {                                    
                     $dbAdapter = $sm-> get('Zend\Db\Adapter\Adapter');
                                     
-                    $form = new SignupForm($dbAdapter);
+                    $form = new AddNewUserForm($dbAdapter);
                     
                     $statesTable = new TableGateway('indian_states',$dbAdapter);
                     $rowSet = $statesTable->select();

@@ -4,14 +4,15 @@ namespace Users\Form;
 use Zend\Form\Form;
 use Zend\InputFilter\InputFilterProviderInterface;
 
-class SignupForm extends Form implements InputFilterProviderInterface 
+class AddNewUserForm extends Form implements InputFilterProviderInterface 
 {       
     public function __construct($dbAdapter)
     {   
         $this->dbAdapter = $dbAdapter;
-        parent::__construct('signupForm');
+        parent::__construct('addNewUserForm');
 
             $this-> setAttribute('method','post');
+            $this->setAttribute('action', '');
 
 
             $this->add(array(
@@ -33,7 +34,7 @@ class SignupForm extends Form implements InputFilterProviderInterface
            'type' => 'Text',
            'attributes' => array(
                'type' => 'text',
-               'required' => 'true',
+               //'required' => 'true',
                'id' => 'dob',
                 'placeholder' => 'Date Of Birth'
            ),
@@ -46,7 +47,7 @@ class SignupForm extends Form implements InputFilterProviderInterface
                 'name' => 'gender',
                 'type' => 'Radio',
                 'attributes' => array(
-                    'required' => 'true',
+                    //'required' => 'true',
                     'value' => 'Male'
                 ),
                 'options' => array(
@@ -66,10 +67,10 @@ class SignupForm extends Form implements InputFilterProviderInterface
             $this->add(array(
                 'name' => 'mobile',
                 'type' => 'Text',
-                'attributes' => array(                                                            
+                'attributes' => array(                                                     
                                 'id' => 'mobile',
                                 'class' => 'form-control',
-                                'required' => 'true',
+                                //'required' => 'true',
                                 'placeholder' => 'Mobile'
                             ),
                 'options' => array(
@@ -95,7 +96,7 @@ class SignupForm extends Form implements InputFilterProviderInterface
                 'type' => 'email',
                 'attributes' => array(                                                                                      'id' => 'email',
                                 'class' => 'form-control',
-                                'required' => 'true',
+                                //'required' => 'true',
                                 'placeholder' => 'Email'
                             ),
                 'options' => array(
@@ -109,7 +110,7 @@ class SignupForm extends Form implements InputFilterProviderInterface
                 'attributes' => array(                                                     
                                 'id' => 'password',
                                 'class' => 'form-control',
-                                'required' => 'true',
+                                //'required' => 'true',
                                 'placeholder' => 'Password'
                             ),
                 'options' => array(
@@ -202,8 +203,7 @@ class SignupForm extends Form implements InputFilterProviderInterface
              'type' => 'Text',
              'attributes' => array(                                                 
                      'id' => 'district',
-                     'class' => 'form-control',
-                     'required' => 'true',
+                     'class' => 'form-control',                     
                      'placeholder' => 'District'
                      ),
              'options' => array(
@@ -215,7 +215,6 @@ class SignupForm extends Form implements InputFilterProviderInterface
            'name' => 'state',
            'type' => 'Select',
            'attributes' => array(
-                    //'required' => 'true',
                     'id' => 'state',            
                     'class' => 'form-control'
                 ),
@@ -229,7 +228,6 @@ class SignupForm extends Form implements InputFilterProviderInterface
            'name' => 'country',
            'type' => 'Select',
            'attributes' => array(
-                    //'required' => 'true',
                     'id' => 'country',            
                     'class' => 'form-control'
                 ),
@@ -257,6 +255,7 @@ class SignupForm extends Form implements InputFilterProviderInterface
            'name' => 'term',           
             'type' => 'Checkbox',
            'attributes' => array(
+               //'required' => 'true',
                'type' => 'Checkbox',
                'id' => 'term'
            ),
@@ -294,7 +293,7 @@ class SignupForm extends Form implements InputFilterProviderInterface
                         )
                     )
                 )
-            ),
+            )
             
         );
     }

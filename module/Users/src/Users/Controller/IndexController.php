@@ -11,7 +11,7 @@ use Users\Model\Users;
 use Users\Model\UsersTable;
 use Users\Model\RPAuthStorage;
 
-use Users\Form\SignupForm;
+use Users\Form\AddNewUserForm;
 
 class IndexController extends AbstractActionController
 {
@@ -159,10 +159,24 @@ class IndexController extends AbstractActionController
     {      
         $sm = $this->getServiceLocator(); 
         $dbAdapter = $sm -> get('Zend\Db\Adapter\Adapter'); 
-        $form = new SignupForm($dbAdapter);
+        $form = new AddNewUserForm($dbAdapter);
+        
+        $request = $this->getRequest();
+        if ($request->isPost()) 
+        {
+            $form->setData($request->getPost());
+            
+            if ($form->isValid()) 
+            {
+                $data = $form->getData();
+            }
+            else 
+            { 
+                echo 'not valid';
+            }
+        }
         
         $view = new ViewModel( array('form' => $form) );
         return $view;
-    }
-    
+    }       
 }
