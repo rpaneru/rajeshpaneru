@@ -4,6 +4,14 @@ namespace Users\Form;
 use Zend\Form\Form;
 use Zend\InputFilter\InputFilterProviderInterface;
 
+use Zend\Db\Sql\Sql;
+
+use Application\Model\IndianStates;
+use Application\Model\IndianStatesTable;
+
+use Application\Model\Countries;
+use Application\Model\CountriesTable;
+
 class AddNewUserForm extends Form implements InputFilterProviderInterface 
 {       
     public function __construct($dbAdapter)
@@ -58,8 +66,7 @@ class AddNewUserForm extends Form implements InputFilterProviderInterface
                     'label' => 'Gender',                    
                     'value_options' => array(
                         'Male' => 'Male',
-                        'Female' => 'Female',
-                        'Other' => 'Other'
+                        'Female' => 'Female'
                     )
                 )
             ));
@@ -152,7 +159,8 @@ class AddNewUserForm extends Form implements InputFilterProviderInterface
                     'label_attributes' => array(
                             'class'=> 'requiredLabel'
                         ),
-                    'empty_option' => 'Choose User Type:',
+                    'empty_option' => 'Select User Type',
+                    'value_options' => $this->getOptionsForUserTypes()
                 )
        ));
 
@@ -169,7 +177,6 @@ class AddNewUserForm extends Form implements InputFilterProviderInterface
                     'label_attributes' => array(
                         'class'=> 'requiredLabel'
                     ),
-
                     'value_options' => array(
                         '1' => 'Active',
                         '2' => 'Inactive'
@@ -230,6 +237,7 @@ class AddNewUserForm extends Form implements InputFilterProviderInterface
                 'options' => array(
                     'label' => 'State',
                     'empty_option' => 'Select State',
+                    'value_options' => $this->getOptionsForStates()
                 )
        ));
            
@@ -243,6 +251,7 @@ class AddNewUserForm extends Form implements InputFilterProviderInterface
                 'options' => array(
                     'label' => 'Country',
                     'empty_option' => 'Select Country',
+                    'value_options' => $this->getOptionsForCountries()
                 )
        ));
        
@@ -290,7 +299,8 @@ class AddNewUserForm extends Form implements InputFilterProviderInterface
 
     }
         
-    public function getInputFilterSpecification() {
+    public function getInputFilterSpecification() 
+    {
         return array(
             
             'name' => array(
@@ -307,5 +317,54 @@ class AddNewUserForm extends Form implements InputFilterProviderInterface
             
         );
     }
-        
+    
+    public function getOptionsForStates()
+    {
+        $dbAdapter = $this->dbAdapter;
+        $sql = new Sql($dbAdapter);
+        $select = $sql->select('indian_states');    
+        //echo $select-> getSqlString($dbAdapter->getPlatform());
+        $statement = $sql->prepareStatementForSqlObject($select);
+        $result = $statement->execute();
+        $resultSetArray = array();
+        $resultSetArray[""] = "Choose State";
+        foreach ($result as $resultRow) 
+        {
+            $resultSetArray[$resultRow['id']] = $resultRow['name'];
+        }
+        return $resultSetArray;
+    }
+    
+    public function getOptionsForCountries()
+    {
+        $dbAdapter = $this->dbAdapter;
+        $sql = new Sql($dbAdapter);
+        $select = $sql->select('countries');    
+        //echo $select-> getSqlString($dbAdapter->getPlatform());
+        $statement = $sql->prepareStatementForSqlObject($select);
+        $result = $statement->execute();
+        $resultSetArray = array();
+        foreach ($result as $resultRow) 
+        {
+            $resultSetArray[$resultRow['id']] = $resultRow['name'];
+        }
+        return $resultSetArray;
+    }
+    
+    public function getOptionsForUserTypes()
+    {
+        $dbAdapter = $this->dbAdapter;
+        $sql = new Sql($dbAdapter);
+        $select = $sql->select('user_types');    
+        //echo $select-> getSqlString($dbAdapter->getPlatform());
+        $statement = $sql->prepareStatementForSqlObject($select);
+        $result = $statement->execute();
+        $resultSetArray = array();
+        foreach ($result as $resultRow) 
+        {
+            $resultSetArray[$resultRow['id']] = $resultRow['userType'];
+        }
+        return $resultSetArray;
+    }
+    
 }
