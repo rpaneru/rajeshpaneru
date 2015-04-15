@@ -1,3 +1,5 @@
+<link href="<?php echo $this->basePath();?>/admin/bootstrap/css/custom.css" rel="stylesheet" type="text/css" />    
+
 <div class="content-wrapper">
     <section class="content">
         <div class="row">
@@ -17,8 +19,8 @@
                         foreach ($form as $element) :
                         ?>
                         <div class="form-group clearfix">
-                            <label class="control-label col-sm-3 text-right"><?php echo $element-> getLabel();?></label>
-                            <div class="col-sm-8"><?php echo $this->formElement($element);?></div>
+                            <label class="control-label col-sm-3 text-right <?php echo $element->getLabelAttributes()["class"];?> "><?php echo $element-> getLabel();?></label>
+                            <div class="col-sm-8"><?php echo $this->formElement($element);?><?php echo  $this->formElementErrors($element)?></div>
                         </div>
                         <?php
                         endforeach;

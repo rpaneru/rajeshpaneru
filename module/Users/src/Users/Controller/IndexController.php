@@ -172,7 +172,7 @@ class IndexController extends AbstractActionController
             }
             else 
             { 
-                echo 'not valid';
+                $messages = $form->getMessages();              
             }
         }
         
