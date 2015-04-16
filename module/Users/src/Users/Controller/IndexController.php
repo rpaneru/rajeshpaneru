@@ -104,6 +104,7 @@ class IndexController extends AbstractActionController
             }
         }                
     }
+    
     public function forgotPasswordAction()
     {
         return new ViewModel();
@@ -160,7 +161,7 @@ class IndexController extends AbstractActionController
     {      
         $sm = $this->getServiceLocator(); 
         $dbAdapter = $sm -> get('Zend\Db\Adapter\Adapter'); 
-        $form = new AddNewUserForm($dbAdapter);
+        $form = new AddNewUserForm($sm , $dbAdapter);
         
         $request = $this->getRequest();
         if ($request->isPost()) 

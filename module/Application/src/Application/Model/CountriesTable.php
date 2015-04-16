@@ -25,7 +25,7 @@ class CountriesTable
     {            
         $resultSet = $this-> tableGateway-> select(function(Select $select) {
             $select-> columns(array('id','name'));
-            $select->order('name desc');
+            $select->order('name asc');
             //echo $select->getSqlString($this-> tableGateway->getAdapter()->getPlatform());
        });
        return $resultSet->buffer();                  

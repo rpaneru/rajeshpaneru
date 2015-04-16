@@ -3,8 +3,17 @@ namespace Application;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 
+use Zend\Db\ResultSet\ResultSet;
+use Zend\Db\TableGateway\TableGateway;
+
 use Zend\Authentication\AuthenticationService;
 use Zend\Authentication\Adapter\DbTable as DbTableAuthAdapter;
+
+use Application\Model\IndianStates;
+use Application\Model\IndianStatesTable;
+
+use Application\Model\Countries;
+use Application\Model\CountriesTable;
 
 class Module
 {
@@ -71,6 +80,44 @@ class Module
                     return $viewHelper;
                 }
             ),
+        );
+    }
+    
+    public function getServiceConfig()
+    {
+        return array(
+           'factories' => array( 
+               
+               'Application\Model\IndianStatesTable' => function($sm)
+                {                                        
+                    $dbAdapter = $sm-> get('Zend\Db\Adapter\Adapter');
+                    $tableGateway = $sm->get('IndianStatesTableGateway');
+                    $table = new IndianStatesTable($dbAdapter,$tableGateway);
+                    return $table;
+                },
+                'IndianStatesTableGateway' => function($sm)
+                {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new IndianStates());
+                    return new TableGateway('indian_states',$dbAdapter,null,$resultSetPrototype);
+                },
+                        
+                'Application\Model\CountriesTable' => function($sm)
+                {                                        
+                    $dbAdapter = $sm-> get('Zend\Db\Adapter\Adapter');
+                    $tableGateway = $sm->get('CountriesTableGateway');
+                    $table = new CountriesTable($dbAdapter,$tableGateway);
+                    return $table;
+                },
+                'CountriesTableGateway' => function($sm)
+                {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new Countries());
+                    return new TableGateway('countries',$dbAdapter,null,$resultSetPrototype);
+                }
+           ),
         );
     }
 }

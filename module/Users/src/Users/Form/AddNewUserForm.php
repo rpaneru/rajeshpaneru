@@ -6,54 +6,53 @@ use Zend\InputFilter\InputFilterProviderInterface;
 
 use Zend\Db\Sql\Sql;
 
-use Application\Model\IndianStates;
-use Application\Model\IndianStatesTable;
-
-use Application\Model\Countries;
-use Application\Model\CountriesTable;
-
 class AddNewUserForm extends Form implements InputFilterProviderInterface 
 {       
-    public function __construct($dbAdapter)
+    protected $sm;
+    protected $dbAdapter;
+    
+    public function __construct($sm , $dbAdapter)
     {   
-        $this->dbAdapter = $dbAdapter;
+        $this->sm = $sm;
+        $this->dbAdapter = $dbAdapter;        
+        
         parent::__construct('addNewUserForm');
 
-            $this-> setAttribute('method','post');
-            $this->setAttribute('action', '');
+        $this-> setAttribute('method','post');
+        $this->setAttribute('action', '');
 
 
-            $this->add(array(
-                'name' => 'name',
-                'type' => 'Text',
-                'attributes' => array(                                                            
-                                'id' => 'name',
-                                'class' => 'form-control',
-                                //'required' => 'true',
-                                'placeholder' => 'Name'
+        $this->add(array(
+            'name' => 'name',
+            'type' => 'Text',
+            'attributes' => array(                                                            
+                            'id' => 'name',
+                            'class' => 'form-control',
+                            //'required' => 'true',
+                            'placeholder' => 'Name'
+                        ),
+            'options' => array(
+                            'label' => 'Name',
+                            'label_attributes' => array(
+                                'class'=> 'requiredLabel'
                             ),
-                'options' => array(
-                                'label' => 'Name',
-                                'label_attributes' => array(
-                                    'class'=> 'requiredLabel'
-                                ),
-                            )
-            ));
+                        )
+        ));
             
-                $this->add(array(
-                   'name' => 'dob',
-                   'type' => 'Text',
-                   'attributes' => array(
-                       'type' => 'text',
-                       'class' => 'form-control',
-                       //'required' => 'true',
-                       'id' => 'dob',
-                        'placeholder' => 'Date Of Birth'
-                   ),
-                    'options' => array(
-                           'label' => 'DOB'
-                  )
-               ));
+        $this->add(array(
+               'name' => 'dob',
+               'type' => 'Text',
+               'attributes' => array(
+                   'type' => 'text',
+                   'class' => 'form-control',
+                   //'required' => 'true',
+                   'id' => 'dob',
+                    'placeholder' => 'Date Of Birth'
+               ),
+                'options' => array(
+                       'label' => 'DOB'
+              )
+           ));
                 
             $this->add(array(
                 'name' => 'gender',
@@ -70,7 +69,7 @@ class AddNewUserForm extends Form implements InputFilterProviderInterface
                     )
                 )
             ));
-            
+
             $this->add(array(
                 'name' => 'mobile',
                 'type' => 'Text',
@@ -320,51 +319,47 @@ class AddNewUserForm extends Form implements InputFilterProviderInterface
     
     public function getOptionsForStates()
     {
-        $dbAdapter = $this->dbAdapter;
-        $sql = new Sql($dbAdapter);
-        $select = $sql->select('indian_states');    
-        //echo $select-> getSqlString($dbAdapter->getPlatform());
-        $statement = $sql->prepareStatementForSqlObject($select);
-        $result = $statement->execute();
-        $resultSetArray = array();
-        $resultSetArray[""] = "Choose State";
-        foreach ($result as $resultRow) 
+        $sm = $this->sm;
+        
+        $indianStatesTable = $sm-> get('Application\Model\IndianStatesTable');        
+        $indianStatesData = $indianStatesTable->getAllStates();
+        
+        $indianStatesArray = array();
+        foreach ($indianStatesData as $rowObject) 
         {
-            $resultSetArray[$resultRow['id']] = $resultRow['name'];
+            $indianStatesArray[$rowObject->id] = $rowObject->name;
         }
-        return $resultSetArray;
+        return $indianStatesArray;
     }
     
     public function getOptionsForCountries()
     {
-        $dbAdapter = $this->dbAdapter;
-        $sql = new Sql($dbAdapter);
-        $select = $sql->select('countries');    
-        //echo $select-> getSqlString($dbAdapter->getPlatform());
-        $statement = $sql->prepareStatementForSqlObject($select);
-        $result = $statement->execute();
-        $resultSetArray = array();
-        foreach ($result as $resultRow) 
+        $sm = $this->sm; 
+        
+        $countriesTable = $sm-> get('Application\Model\CountriesTable');        
+        $countriesData = $countriesTable->getAllCountries();
+        
+        $countriesArray = array();        
+        foreach ($countriesData as $rowObject) 
         {
-            $resultSetArray[$resultRow['id']] = $resultRow['name'];
+            $countriesArray[$rowObject->id] = $rowObject->name;
         }
-        return $resultSetArray;
+        return $countriesArray;        
     }
     
     public function getOptionsForUserTypes()
     {
-        $dbAdapter = $this->dbAdapter;
-        $sql = new Sql($dbAdapter);
-        $select = $sql->select('user_types');    
-        //echo $select-> getSqlString($dbAdapter->getPlatform());
-        $statement = $sql->prepareStatementForSqlObject($select);
-        $result = $statement->execute();
-        $resultSetArray = array();
-        foreach ($result as $resultRow) 
+        $sm = $this->sm; 
+        
+        $userTypesTable = $sm-> get('Users\Model\UserTypesTable');        
+        $userTypesData = $userTypesTable->getAllUserTypes();
+        
+        $userTypesArray = array();        
+        foreach ($userTypesData as $rowObject) 
         {
-            $resultSetArray[$resultRow['id']] = $resultRow['userType'];
+            $userTypesArray[$rowObject->id] = $rowObject->userType;
         }
-        return $resultSetArray;
+        return $userTypesArray;
     }
     
 }

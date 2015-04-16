@@ -4,7 +4,7 @@
 return array(
     'db' => array(
                 'username' => 'root',
-                'password' => ''
+                'password' => 'rajesh'
 //                'username' => 'rpaneru1986',
 //                'password' => 'Paneruhello123'
         )

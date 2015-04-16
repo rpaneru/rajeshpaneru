@@ -1,6 +1,6 @@
 <?php
-namespace Application\Model;
-use Application\Model\IndianStates;
+namespace Users\Model;
+use Users\Model\Users;
 
 use Zend\Db\TableGateway\TableGateway;
 use Zend\Db\Adapter\Driver\ResultInterface;
@@ -11,7 +11,7 @@ use Zend\Db\Sql\Sql;
 use Zend\Db\Sql\Select;
 use Zend\Db\Sql\Where;
 
-class IndianStatesTable 
+class UserTypesTable 
 {
     protected $dbAdapter;
     protected $tableGateway;
@@ -21,14 +21,14 @@ class IndianStatesTable
         $this-> dbAdapter = $dbAdapter;
         $this-> tableGateway = $tableGateway;
     }
-    public function getAllStates()
-    {            
+    public function getAllUserTypes()
+    {           
         $resultSet = $this-> tableGateway-> select(function(Select $select) {
-            $select-> columns(array('id','name'));
-            $select->order('name asc');
+            $select-> columns(array('id','userType'));
+            $select->order('id desc');
             //echo $select->getSqlString($this-> tableGateway->getAdapter()->getPlatform());
        });
-       return $resultSet->buffer();                  
+       return $resultSet->buffer();                    
     }
 }
 
