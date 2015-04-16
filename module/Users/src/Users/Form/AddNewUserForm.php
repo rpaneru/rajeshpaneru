@@ -28,7 +28,7 @@ class AddNewUserForm extends Form implements InputFilterProviderInterface
             'attributes' => array(                                                            
                             'id' => 'name',
                             'class' => 'form-control',
-                            //'required' => 'true',
+                            'required' => 'true',
                             'placeholder' => 'Name'
                         ),
             'options' => array(
