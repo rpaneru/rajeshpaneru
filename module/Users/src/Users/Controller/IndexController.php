@@ -181,4 +181,15 @@ class IndexController extends AbstractActionController
         $view = new ViewModel( array('form' => $form) );
         return $view;
     }       
+    
+    public function updateUserProfileAction()
+    {      
+        $sm = $this->getServiceLocator(); 
+        $dbAdapter = $sm -> get('Zend\Db\Adapter\Adapter'); 
+        $form = new AddNewUserForm($sm , $dbAdapter);
+                
+        $view = new ViewModel( array('form' => $form) );
+        return $view;
+    }       
+    
 }

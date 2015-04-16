@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 12, 2015 at 10:11 AM
+-- Generation Time: Apr 16, 2015 at 08:15 PM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -364,7 +364,7 @@ CREATE TABLE IF NOT EXISTS `indian_states` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` text NOT NULL,
   `capital` text NOT NULL,
-  `unionTerritory` enum('Yes','No') NOT NULL,
+  `unionTerritory` enum('Yes','No') NOT NULL DEFAULT 'No',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=36 ;
 
@@ -465,7 +465,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `name` text NOT NULL,
   `dob` date NOT NULL,
   `gernder` enum('Male','Female') NOT NULL,
-  `mobile` int(10) NOT NULL,
+  `mobile` bigint(12) NOT NULL,
   `fax` text NOT NULL,
   `email` text NOT NULL,
   `password` text NOT NULL,
@@ -484,7 +484,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `dob`, `gernder`, `mobile`, `fax`, `email`, `password`, `addressId`, `image`, `userTypeId`, `status`, `createdDateTime`, `createdBy`, `sessionId`) VALUES
-(1, 'Rajesh Paneru', '1986-06-03', 'Male', 2147483647, '', 'rpaneru1986@gmail.com', '2452aa0a0be563260021b52622dcc360', 1, 'rajesh.png', 4, '1', '2015-04-05 18:00:32', '', '');
+(1, 'Rajesh Paneru', '1986-06-03', 'Male', 8130654757, '', 'rpaneru1986@gmail.com', '2452aa0a0be563260021b52622dcc360', 1, 'rajesh.png', 4, '1', '2015-04-05 18:00:32', '', '');
 
 -- --------------------------------------------------------
 
