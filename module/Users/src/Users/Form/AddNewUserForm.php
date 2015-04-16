@@ -4,6 +4,14 @@ namespace Users\Form;
 use Zend\Form\Form;
 use Zend\InputFilter\InputFilterProviderInterface;
 
+use Zend\Db\Sql\Sql;
+
+use Application\Model\IndianStates;
+use Application\Model\IndianStatesTable;
+
+use Application\Model\Countries;
+use Application\Model\CountriesTable;
+
 class AddNewUserForm extends Form implements InputFilterProviderInterface 
 {       
     public function __construct($dbAdapter)
@@ -25,23 +33,27 @@ class AddNewUserForm extends Form implements InputFilterProviderInterface
                                 'placeholder' => 'Name'
                             ),
                 'options' => array(
-                                'label' => 'Name'
+                                'label' => 'Name',
+                                'label_attributes' => array(
+                                    'class'=> 'requiredLabel'
+                                ),
                             )
             ));
             
-        $this->add(array(
-           'name' => 'dob',
-           'type' => 'Text',
-           'attributes' => array(
-               'type' => 'text',
-               //'required' => 'true',
-               'id' => 'dob',
-                'placeholder' => 'Date Of Birth'
-           ),
-            'options' => array(
-                   'label' => 'DOB',
-          )
-       ));
+                $this->add(array(
+                   'name' => 'dob',
+                   'type' => 'Text',
+                   'attributes' => array(
+                       'type' => 'text',
+                       'class' => 'form-control',
+                       //'required' => 'true',
+                       'id' => 'dob',
+                        'placeholder' => 'Date Of Birth'
+                   ),
+                    'options' => array(
+                           'label' => 'DOB'
+                  )
+               ));
                 
             $this->add(array(
                 'name' => 'gender',
@@ -51,15 +63,10 @@ class AddNewUserForm extends Form implements InputFilterProviderInterface
                     'value' => 'Male'
                 ),
                 'options' => array(
-                    'label' => 'Gender',
-                    'label_attributes' => array(
-                    'class' => ''
-                    ),
-
+                    'label' => 'Gender',                    
                     'value_options' => array(
                         'Male' => 'Male',
-                        'Female' => 'Female',
-                        'Other' => 'Other'
+                        'Female' => 'Female'
                     )
                 )
             ));
@@ -96,11 +103,14 @@ class AddNewUserForm extends Form implements InputFilterProviderInterface
                 'type' => 'email',
                 'attributes' => array(                                                                                      'id' => 'email',
                                 'class' => 'form-control',
-                                //'required' => 'true',
+                                'required' => 'true',
                                 'placeholder' => 'Email'
                             ),
                 'options' => array(
-                                'label' => 'Email'
+                                'label' => 'Email',
+                                'label_attributes' => array(
+                                    'class'=> 'requiredLabel'
+                                ),
                             )
             ));
                                                 
@@ -110,11 +120,14 @@ class AddNewUserForm extends Form implements InputFilterProviderInterface
                 'attributes' => array(                                                     
                                 'id' => 'password',
                                 'class' => 'form-control',
-                                //'required' => 'true',
+                                'required' => 'true',
                                 'placeholder' => 'Password'
                             ),
                 'options' => array(
-                                'label' => 'Password'
+                                'label' => 'Password',
+                                'label_attributes' => array(
+                                    'class'=> 'requiredLabel'
+                                ),
                             )
             ));
                                                             
@@ -137,13 +150,17 @@ class AddNewUserForm extends Form implements InputFilterProviderInterface
            'name' => 'userTypeId',
            'type' => 'Select',
            'attributes' => array(
-                    //'required' => 'true',
+                    'required' => 'true',
                     'id' => 'userTypeId',            
                     'class' => 'form-control'
                 ),
                 'options' => array(
                     'label' => 'User Type',
-                    'empty_option' => 'Choose User Type:',
+                    'label_attributes' => array(
+                            'class'=> 'requiredLabel'
+                        ),
+                    'empty_option' => 'Select User Type',
+                    'value_options' => $this->getOptionsForUserTypes()
                 )
        ));
 
@@ -152,15 +169,14 @@ class AddNewUserForm extends Form implements InputFilterProviderInterface
                 'name' => 'status',
                 'type' => 'Radio',
                 'attributes' => array(
-                    //'required' => 'true',
+                    'required' => 'true',
                     'value' => '1'
                 ),
                 'options' => array(
                     'label' => 'Status',
                     'label_attributes' => array(
-                        'class' => ''
+                        'class'=> 'requiredLabel'
                     ),
-
                     'value_options' => array(
                         '1' => 'Active',
                         '2' => 'Inactive'
@@ -221,6 +237,7 @@ class AddNewUserForm extends Form implements InputFilterProviderInterface
                 'options' => array(
                     'label' => 'State',
                     'empty_option' => 'Select State',
+                    'value_options' => $this->getOptionsForStates()
                 )
        ));
            
@@ -234,6 +251,7 @@ class AddNewUserForm extends Form implements InputFilterProviderInterface
                 'options' => array(
                     'label' => 'Country',
                     'empty_option' => 'Select Country',
+                    'value_options' => $this->getOptionsForCountries()
                 )
        ));
        
@@ -255,12 +273,15 @@ class AddNewUserForm extends Form implements InputFilterProviderInterface
            'name' => 'term',           
             'type' => 'Checkbox',
            'attributes' => array(
-               //'required' => 'true',
+               'required' => 'true',
                'type' => 'Checkbox',
                'id' => 'term'
            ),
             'options' => array(
                    'label' => 'Accept Term',
+                    'label_attributes' => array(
+                        'class'=> 'requiredLabel'
+                    ),
           )
        ));
         
@@ -271,16 +292,15 @@ class AddNewUserForm extends Form implements InputFilterProviderInterface
                 'id' => 'submit', 
                 'class' => 'btn btn-primary',
                 'value' => 'Add New User'
-            ),
-            'options' => array(
-                   'label' => '',
             )
+            
         ));
                 
 
     }
         
-    public function getInputFilterSpecification() {
+    public function getInputFilterSpecification() 
+    {
         return array(
             
             'name' => array(
@@ -297,5 +317,54 @@ class AddNewUserForm extends Form implements InputFilterProviderInterface
             
         );
     }
-        
+    
+    public function getOptionsForStates()
+    {
+        $dbAdapter = $this->dbAdapter;
+        $sql = new Sql($dbAdapter);
+        $select = $sql->select('indian_states');    
+        //echo $select-> getSqlString($dbAdapter->getPlatform());
+        $statement = $sql->prepareStatementForSqlObject($select);
+        $result = $statement->execute();
+        $resultSetArray = array();
+        $resultSetArray[""] = "Choose State";
+        foreach ($result as $resultRow) 
+        {
+            $resultSetArray[$resultRow['id']] = $resultRow['name'];
+        }
+        return $resultSetArray;
+    }
+    
+    public function getOptionsForCountries()
+    {
+        $dbAdapter = $this->dbAdapter;
+        $sql = new Sql($dbAdapter);
+        $select = $sql->select('countries');    
+        //echo $select-> getSqlString($dbAdapter->getPlatform());
+        $statement = $sql->prepareStatementForSqlObject($select);
+        $result = $statement->execute();
+        $resultSetArray = array();
+        foreach ($result as $resultRow) 
+        {
+            $resultSetArray[$resultRow['id']] = $resultRow['name'];
+        }
+        return $resultSetArray;
+    }
+    
+    public function getOptionsForUserTypes()
+    {
+        $dbAdapter = $this->dbAdapter;
+        $sql = new Sql($dbAdapter);
+        $select = $sql->select('user_types');    
+        //echo $select-> getSqlString($dbAdapter->getPlatform());
+        $statement = $sql->prepareStatementForSqlObject($select);
+        $result = $statement->execute();
+        $resultSetArray = array();
+        foreach ($result as $resultRow) 
+        {
+            $resultSetArray[$resultRow['id']] = $resultRow['userType'];
+        }
+        return $resultSetArray;
+    }
+    
 }

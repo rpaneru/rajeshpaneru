@@ -102,26 +102,7 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new UserLoginHistory());
                     return new TableGateway('User_login_history',$dbAdapter,null,$resultSetPrototype);
-                },
-                'Users\Form\AddNewUserForm' => function($sm)
-                {                                    
-                    $dbAdapter = $sm-> get('Zend\Db\Adapter\Adapter');
-                                    
-                    $form = new AddNewUserForm($dbAdapter);
-                    
-                    $statesTable = new TableGateway('indian_states',$dbAdapter);
-                    $rowSet = $statesTable->select();
-                    $result = array();
-                    foreach ($rowSet as $row)
-                    {
-                            $result[$row['id']] = $row['name'];		
-                    }		
-                    asort($result);
-                    $states = $form->get('indian_states');	 
-                    $states->setValueOptions($result);
-                    
-                    return $form;
-                }, 
+                }
            ),
         );
     }
