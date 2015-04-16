@@ -36,10 +36,17 @@
     </section>
 </div>
 
+<?php echo date('d-M-Y',strtotime(date("Y-m-d h:i:s"))); ?>
 
 <script type="text/javascript">       
 $(function () {
-    $('#dob').datepicker();
+    $('#dob').datepicker({
+            format: 'd-M-yyyy',            
+            autoclose: true,            
+            endDate: '+0d',
+            viewMode: "date", 
+            minViewMode: "date"            
+    });
 });
 $(document).ready(function () {           
 });
