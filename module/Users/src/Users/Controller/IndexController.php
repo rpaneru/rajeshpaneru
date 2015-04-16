@@ -155,6 +155,7 @@ class IndexController extends AbstractActionController
         $view = new ViewModel(array( 'userDetails' => $userDetails ));
         return $view;
     }
+    
     public function addNewUserAction()
     {      
         $sm = $this->getServiceLocator(); 
