@@ -24,8 +24,8 @@ class CountriesTable
     public function getAllCountries()
     {            
         $resultSet = $this-> tableGateway-> select(function(Select $select) {
-            $select-> columns(array('id','name'));
-            $select->order('name asc');
+            $select-> columns(array('id','countryName'));
+            $select->order('countryName asc');
             //echo $select->getSqlString($this-> tableGateway->getAdapter()->getPlatform());
        });
        return $resultSet->buffer();                  

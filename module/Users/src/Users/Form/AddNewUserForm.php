@@ -23,10 +23,10 @@ class AddNewUserForm extends Form implements InputFilterProviderInterface
 
 
         $this->add(array(
-            'name' => 'name',
+            'name' => 'userName',
             'type' => 'Text',
             'attributes' => array(                                                            
-                            'id' => 'name',
+                            'id' => 'userName',
                             'class' => 'form-control',
                             'required' => 'true',
                             'placeholder' => 'Name'
@@ -40,13 +40,13 @@ class AddNewUserForm extends Form implements InputFilterProviderInterface
         ));
             
         $this->add(array(
-               'name' => 'dob',
+               'name' => 'userDob',
                'type' => 'Text',
                'attributes' => array(
                    'type' => 'text',
                    'class' => 'form-control',
                    //'required' => 'true',
-                   'id' => 'dob',
+                   'id' => 'userDob',
                     'placeholder' => 'Date Of Birth'
                ),
                 'options' => array(
@@ -55,7 +55,7 @@ class AddNewUserForm extends Form implements InputFilterProviderInterface
            ));
                 
             $this->add(array(
-                'name' => 'gender',
+                'name' => 'userGender',
                 'type' => 'Radio',
                 'attributes' => array(
                     //'required' => 'true',
@@ -71,10 +71,10 @@ class AddNewUserForm extends Form implements InputFilterProviderInterface
             ));
 
             $this->add(array(
-                'name' => 'mobile',
+                'name' => 'userMobile',
                 'type' => 'Text',
                 'attributes' => array(                                                     
-                                'id' => 'mobile',
+                                'id' => 'userMobile',
                                 'class' => 'form-control',
                                 //'required' => 'true',
                                 'placeholder' => 'Mobile'
@@ -85,10 +85,10 @@ class AddNewUserForm extends Form implements InputFilterProviderInterface
             ));
                         
             $this->add(array(
-                'name' => 'fax',
+                'name' => 'userFax',
                 'type' => 'Text',
                 'attributes' => array(                                                     
-                                'id' => 'fax',
+                                'id' => 'userFax',
                                 'class' => 'form-control',
                                 'placeholder' => 'Fax'
                             ),
@@ -98,7 +98,7 @@ class AddNewUserForm extends Form implements InputFilterProviderInterface
             ));
                                     
             $this->add(array(
-                'name' => 'email',
+                'name' => 'userEmail',
                 'type' => 'email',
                 'attributes' => array(                                                                                      'id' => 'email',
                                 'class' => 'form-control',
@@ -114,10 +114,10 @@ class AddNewUserForm extends Form implements InputFilterProviderInterface
             ));
                                                 
             $this->add(array(
-                'name' => 'password',
+                'name' => 'userPassword',
                 'type' => 'password',
                 'attributes' => array(                                                     
-                                'id' => 'password',
+                                'id' => 'userPassword',
                                 'class' => 'form-control',
                                 'required' => 'true',
                                 'placeholder' => 'Password'
@@ -133,10 +133,10 @@ class AddNewUserForm extends Form implements InputFilterProviderInterface
                                                             
        
                 $this->add(array(
-                    'name' => 'user_image',
+                    'name' => 'userImage',
                     'type' => 'file',
                     'attributes' => array(
-                        'id' => 'user_image',
+                        'id' => 'userImage',
                         'class' => 'form-control'
                     ),
                      'options' => array(
@@ -165,7 +165,7 @@ class AddNewUserForm extends Form implements InputFilterProviderInterface
 
 
             $this->add(array(
-                'name' => 'status',
+                'name' => 'userStatus',
                 'type' => 'Radio',
                 'attributes' => array(
                     'required' => 'true',
@@ -177,8 +177,8 @@ class AddNewUserForm extends Form implements InputFilterProviderInterface
                         'class'=> 'requiredLabel'
                     ),
                     'value_options' => array(
-                        '1' => 'Active',
-                        '2' => 'Inactive'
+                        'Active' => 'Active',
+                        'Inactive' => 'Inactive'
                     )
                 )
             ));
@@ -227,10 +227,10 @@ class AddNewUserForm extends Form implements InputFilterProviderInterface
          ));
        
            $this->add(array(                           
-           'name' => 'state',
+           'name' => 'stateId',
            'type' => 'Select',
            'attributes' => array(
-                    'id' => 'state',            
+                    'id' => 'stateId',            
                     'class' => 'form-control'
                 ),
                 'options' => array(
@@ -241,10 +241,10 @@ class AddNewUserForm extends Form implements InputFilterProviderInterface
        ));
            
            $this->add(array(                           
-           'name' => 'country',
+           'name' => 'countryId',
            'type' => 'Select',
            'attributes' => array(
-                    'id' => 'country',            
+                    'id' => 'countryId',            
                     'class' => 'form-control'
                 ),
                 'options' => array(
@@ -255,10 +255,10 @@ class AddNewUserForm extends Form implements InputFilterProviderInterface
        ));
        
         $this->add(array(
-            'name' => 'zip',
+            'name' => 'zipCode',
             'type' => 'text',
             'attributes' => array(               
-               'id' => 'zip',
+               'id' => 'zipCode',
                'class' => 'form-control',                
                'placeholder' => 'Zip'
            ),
@@ -302,7 +302,7 @@ class AddNewUserForm extends Form implements InputFilterProviderInterface
     {
         return array(
             
-            'name' => array(
+            'userName' => array(
                 'required' => 'true',
                 'validators' => array(
                     array(
@@ -327,7 +327,7 @@ class AddNewUserForm extends Form implements InputFilterProviderInterface
         $indianStatesArray = array();
         foreach ($indianStatesData as $rowObject) 
         {
-            $indianStatesArray[$rowObject->id] = $rowObject->name;
+            $indianStatesArray[$rowObject->id] = $rowObject->stateName;
         }
         return $indianStatesArray;
     }
@@ -342,7 +342,7 @@ class AddNewUserForm extends Form implements InputFilterProviderInterface
         $countriesArray = array();        
         foreach ($countriesData as $rowObject) 
         {
-            $countriesArray[$rowObject->id] = $rowObject->name;
+            $countriesArray[$rowObject->id] = $rowObject->countryName;
         }
         return $countriesArray;        
     }

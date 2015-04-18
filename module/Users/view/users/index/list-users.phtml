@@ -34,15 +34,18 @@
                             {
                             ?>
                             <tr>
-                                <td><?php echo $userDetails->name; ?></td>
-                                <td><?php echo $userDetails->email; ?></td>
-                                <td><?php echo $this->dateFormatIndia( $userDetails->dob );?></td>
-                                <td><?php echo $userDetails->mobile; ?></td>
-                                <td><?php echo $userDetails->gender; ?></td>
-                                <td><?php echo ($userDetails->status == 1) ? 'Active' : 'Inactive';?></td>
+                                <td><?php echo $userDetails->userName; ?></td>
+                                <td><?php echo $userDetails->userEmail; ?></td>
+                                <td><?php echo $this->dateFormatIndia( $userDetails->userDob );?></td>
+                                <td><?php echo $userDetails->userMobile; ?></td>
+                                <td><?php echo $userDetails->userGender; ?></td>
+                                <td><?php echo ($userDetails->userStatus == 1) ? 'Active' : 'Inactive';?></td>
                                 <td>
-                                    <a class="btn edit"><i class="fa fa-edit"></i> Edit</a>
-                                    <a class="btn delete"><i class="fa fa-times"></i> Delete</a>                                    
+                                    <form class="frm" method="post" action="#">
+                                        <a class="btn edit"><i class="fa fa-edit"></i> Edit</a>
+                                        <a class="btn delete"><i class="fa fa-times"></i> Delete</a>                                    
+                                        <input type="hidden" name="userEmail" value="<?php echo $userDetails->userEmail; ?>">
+                                    </form>
                                 </td>
                             </tr>
                             <?php
@@ -73,12 +76,16 @@ $(function () {
 
 $(document).ready(function () {    
     $(document).on('click','.edit',function(){
-        $('#frm').attr('action','<?php echo $this->basePath();?>/users/index/update-user-profile');
-        $('#frm').submit();
+        var elem = $(this);
+        var frm = elem.closest('tr').find('.frm');
+        frm.attr('action','<?php echo $this->basePath();?>/users/index/update-user-profile');
+        frm.submit();
     });
     $(document).on('click','.delete',function(){
-        $('#frm').attr('action','<?php echo $this->basePath();?>/users/index/delete-user');
-        $('#frm').submit();
+        var elem = $(this);
+        var frm = elem.closest('tr').find('.frm');
+        frm.attr('action','<?php echo $this->basePath();?>/users/index/delete-user-profile');
+        frm.submit();
     });
 });
 </script>

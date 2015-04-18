@@ -21,18 +21,42 @@ class UsersTable
         $this-> dbAdapter = $dbAdapter;
         $this-> tableGateway = $tableGateway;
     }
-    public function getUsersDetails($email)
+    public function getUsersDetails($userEmail)
     {
-        $email = (string) $email;            
-        $resultSet = $this-> tableGateway-> select(function(Select $select) use ($email){
-            $select-> columns(array('name','email','dob','mobile','gernder','image','status'));
-            $select-> where(array(
-                'email' => $email,
-            ));
-            $select->order('id desc');
-            //echo $select->getSqlString($this-> tableGateway->getAdapter()->getPlatform());
-       });
-       return $resultSet->buffer();                  
+        $userEmail = (string) $userEmail;  
+        $sql = new Sql($this->tableGateway->getAdapter());
+        $select = $sql->select();
+        $select->columns(array('userName','userEmail','userDob','userMobile','userFax','userGender','userImage','userStatus','userTypeId'));
+        $select->quantifier('DISTINCT');
+        $select->from(array('u' => 'users'));
+        $select->join(array('a' => 'addresses'), 'u.userAddressId = a.id', array('address','city','district','stateId','countryId','zipCode'), "left");
+        $select->join(array('is' => 'indian_states'), 'a.stateId = is.id', array('stateName'), "left");
+        $select->join(array('c' => 'countries'), 'a.countryId = c.id', array('countryName'), "left");
+        
+        if($userEmail)
+        {
+            $select->where(array('userEmail' => $userEmail ));
+        }
+        //echo $select->getSqlString($this-> tableGateway->getAdapter()->getPlatform());
+        
+        $statement = $sql->prepareStatementForSqlObject($select);
+        $result = $statement->execute();
+
+        if ($result instanceof ResultInterface && $result->isQueryResult()) 
+        {
+            $resultSet = new ResultSet();
+            $resultSet->initialize($result);
+        }
+        
+        if($userEmail)
+        {
+            return $resultSet->current();                  
+        }
+        else
+        {
+            return $resultSet->buffer();                  
+        }
+        
     }
 }
 

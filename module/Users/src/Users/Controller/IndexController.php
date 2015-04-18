@@ -7,6 +7,7 @@ use Zend\View\Model\ViewModel;
 use Zend\Http\Header\SetCookie;
 use Zend\Db\Adapter\Adapter;
 
+
 use Users\Model\Users;
 use Users\Model\UsersTable;
 use Users\Model\RPAuthStorage;
@@ -61,19 +62,19 @@ class IndexController extends AbstractActionController
         {
             $postData = $request-> getPost();
             
-            $email = $postData['email'];
-            $password = $postData['password'];
+            $userEmail = $postData['email'];
+            $userPassword = $postData['password'];
 
             $this->getAuthService()->getAdapter()
-                    ->setIdentity($email)
-                    ->setCredential($password);
+                    ->setIdentity($userEmail)
+                    ->setCredential($userPassword);
             
             $result = $this->getAuthService()->authenticate();
             
             $helper = $sm->get('viewhelpermanager')->get('getValue');
-            $status = $helper('users', 'status', 'email', $email);
+            $userStatus = $helper('users', 'userStatus', 'userEmail', $userEmail);
                        
-            if ($result->isValid() && $status == 1)
+            if ($result->isValid() && $userStatus == 1)
             {
 
                 $data = $auth -> getAdapter()-> getResultRowObject(null,'password');
@@ -148,10 +149,9 @@ class IndexController extends AbstractActionController
     public function listUsersAction()
     {      
         $sm = $this->getServiceLocator();
-        $auth = $sm-> get('AuthService');
-        $email = $auth->getIdentity()->email;
+        $auth = $sm-> get('AuthService');        
         
-        $userDetails = $this->getServiceLocator()->get('Users\Model\UsersTable')->getUsersDetails( $email );
+        $userDetails = $sm->get('Users\Model\UsersTable')->getUsersDetails( '' );
         
         $view = new ViewModel(array( 'userDetails' => $userDetails ));
         return $view;
@@ -186,8 +186,19 @@ class IndexController extends AbstractActionController
     {      
         $sm = $this->getServiceLocator(); 
         $dbAdapter = $sm -> get('Zend\Db\Adapter\Adapter'); 
+        
+        $userEmail = $this->params()->fromPost('userEmail');
+        
+        $usersTable = $sm-> get('Users\Model\UsersTable');        
+        $usersData = $usersTable->getUsersDetails($userEmail);        
+
         $form = new AddNewUserForm($sm , $dbAdapter);
-                
+
+        if($usersData)
+        {
+            $form->bind($usersData);   
+        }        
+        
         $view = new ViewModel( array('form' => $form) );
         return $view;
     }       
