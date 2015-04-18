@@ -15,13 +15,16 @@
                         <li class="user-header">
                             <img src="<?php echo $this->layout()->getVariable('userImagePath'). $this->userDetails->userImage;?>" class="img-circle" alt="User Image" />
                             <p>
-                            <?php echo $this->userDetails->name;?>
+                            <?php echo $this->userDetails->userName;?>
                             <small>Member since <?php echo $this->dateFormatIndia( $this->userDetails->createdDateTime );?></small>
                             </p>
                         </li>            
                         <li class="user-footer">
                             <div class="pull-left">
-                                <a href="#" class="btn btn-default btn-flat">Profile</a>
+                                <form class="frm" method="post" action="#">
+                                    <a href="#" class="btn btn-default btn-flat profileLink">Profile</a>
+                                    <input type="hidden" name="userEmail" value="<?php echo $this->userDetails->userEmail;?>">
+                                </form>
                             </div>
                             <div class="pull-right">
                                 <a href="<?php echo $this->basePath();?>/users/index/log-out" class="btn btn-default btn-flat">Sign out</a>
@@ -33,3 +36,14 @@
         </div>
     </nav>
 </header>
+
+<script>
+$(document).ready(function () {    
+    $(document).on('click','.profileLink',function(){
+        var elem = $(this);
+        var frm = elem.closest('div').find('.frm');
+        frm.attr('action','<?php echo $this->basePath();?>/users/index/update-user-profile');
+        frm.submit();
+    });    
+});
+</script>
