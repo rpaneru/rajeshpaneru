@@ -32,16 +32,16 @@ class IndexController extends AbstractActionController
     {
         $headCookie = $this->getRequest()->getHeaders()->get('Cookie');
         
-        if(isset($headCookie->email))
+        if(isset($headCookie->userEmail))
         {
-        $email = $headCookie->email;    
+            $userEmail = $headCookie->userEmail;    
         }
         else
         {
-            $email = '';
+            $userEmail = '';
         }
 
-        $view = new ViewModel( array('email'=> $email ) );
+        $view = new ViewModel( array('userEmail'=> $userEmail ) );
         $view->setTerminal(true);
         return $view;
     }
@@ -74,20 +74,20 @@ class IndexController extends AbstractActionController
             $helper = $sm->get('viewhelpermanager')->get('getValue');
             $userStatus = $helper('users', 'userStatus', 'userEmail', $userEmail);
                        
-            if ($result->isValid() && $userStatus == 1)
+            if ($result->isValid() && $userStatus == 'Active')
             {
 
-                $data = $auth -> getAdapter()-> getResultRowObject(null,'password');
+                $data = $auth -> getAdapter()-> getResultRowObject(null,'userPassword');
                 $auth->getStorage()->write($data);
 
                 if( $postData['rememberMe'] == 'Yes' )
                 {   
-                    $cookieEmail = new  \Zend\Http\Header\SetCookie('email', $auth-> getIdentity()-> email, time() + 60 * 60 , '/');
+                    $cookieEmail = new  \Zend\Http\Header\SetCookie('userEmail', $auth-> getIdentity()-> userEmail, time() + 60 * 60 , '/');
                     $this->getResponse()->getHeaders()->addHeader($cookieEmail);
                 }  
                 else 
                 {                    
-                    $cookieEmail = new \Zend\Http\Header\SetCookie('email','',strtotime('-1 Year', time()), '/' );
+                    $cookieEmail = new \Zend\Http\Header\SetCookie('userEmail','',strtotime('-1 Year', time()), '/' );
                     $this->getResponse()->getHeaders()->addHeader($cookieEmail);
                 }
                 
@@ -161,8 +161,9 @@ class IndexController extends AbstractActionController
     {      
         $sm = $this->getServiceLocator(); 
         $dbAdapter = $sm -> get('Zend\Db\Adapter\Adapter'); 
-        $form = new AddNewUserForm($sm , $dbAdapter);
+        $form = new AddNewUserForm($sm , $dbAdapter, 'process-add-new-user');
         
+        $form->setValidationGroup('name', 'email', 'subject', 'message');
         $request = $this->getRequest();
         if ($request->isPost()) 
         {
@@ -192,8 +193,7 @@ class IndexController extends AbstractActionController
         $usersTable = $sm-> get('Users\Model\UsersTable');        
         $usersData = $usersTable->getUsersDetails($userEmail);        
 
-        $form = new AddNewUserForm($sm , $dbAdapter);
-
+        $form = new AddNewUserForm($sm , $dbAdapter, 'process-update-user-profile' );
         if($usersData)
         {
             $form->bind($usersData);   

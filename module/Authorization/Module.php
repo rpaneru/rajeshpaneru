@@ -31,7 +31,7 @@ class Module
             
             $authService = $sm-> get('AuthService');
             if($authService-> hasIdentity())
-            {                            
+            {                    
                 $userTypeId = $authService-> getIdentity()-> userTypeId;                            
             }
             else

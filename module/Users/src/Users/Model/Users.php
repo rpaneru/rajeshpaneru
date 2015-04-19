@@ -31,7 +31,7 @@ class Users
         $this-> userPassword = (isset($data['userPassword'])) ? $data['userPassword'] : null;
         $this-> userAddressId = (isset($data['userAddressId'])) ? $data['userAddressId'] : null;
         $this-> userImage = (isset($data['userImage'])) ? $data['userImage'] : null;
-        $this-> userTypeId = (isset($data['userTypeId'])) ? $data['userTypeId'] : 0;
+        $this-> userTypeId = (isset($data['userTypeId'])) ? $data['userTypeId'] : 1;
         $this-> userStatus = (isset($data['userStatus'])) ? $data['userStatus'] : 'Inactive';
         $this-> createdBy = (isset($data['createdBy'])) ? $data['createdBy'] : null;
         $this-> sessionId = (isset($data['sessionId'])) ? $data['sessionId'] : null;

@@ -18,12 +18,23 @@
                         echo $this->form()->openTag($form);
                         
                         foreach ($form as $element) :
+                            if( $element->getAttributes()['name'] != 'term' )
+                            {
                         ?>
                         <div class="form-group clearfix">
                             <label class="control-label col-sm-3 text-right <?php echo $element->getLabelAttributes()["class"];?> "><?php echo $element-> getLabel();?></label>
                             <div class="col-sm-8"><?php echo $this->formElement($element);?><?php echo  $this->formElementErrors($element)?></div>
                         </div>
                         <?php
+                                if($element->getAttributes()['name'] == 'userImage')
+                                {
+                                ?>
+                                <div class="form-group clearfix">                                    
+                                    <div class="col-sm-offset-4"><img src="<?php echo $this->layout()->getVariable('userImagePath'). $element->getValue();?>" class="img-circle" alt="User Image" /></div>
+                                </div>    
+                                <?php
+                                }
+                            }
                         endforeach;
                         echo $this->form()->closeTag();
                         ?>

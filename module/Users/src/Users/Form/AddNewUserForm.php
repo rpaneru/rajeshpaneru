@@ -3,15 +3,17 @@ namespace Users\Form;
 
 use Zend\Form\Form;
 use Zend\InputFilter\InputFilterProviderInterface;
+use Zend\Captcha;
 
 use Zend\Db\Sql\Sql;
+
 
 class AddNewUserForm extends Form implements InputFilterProviderInterface 
 {       
     protected $sm;
     protected $dbAdapter;
     
-    public function __construct($sm , $dbAdapter)
+    public function __construct($sm , $dbAdapter, $action)
     {   
         $this->sm = $sm;
         $this->dbAdapter = $dbAdapter;        
@@ -19,7 +21,7 @@ class AddNewUserForm extends Form implements InputFilterProviderInterface
         parent::__construct('addNewUserForm');
 
         $this-> setAttribute('method','post');
-        $this->setAttribute('action', '');
+        $this->setAttribute('action', $action );
 
 
         $this->add(array(
