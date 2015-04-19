@@ -193,6 +193,9 @@ class IndexController extends AbstractActionController
         $usersTable = $sm-> get('Users\Model\UsersTable');        
         $usersData = $usersTable->getUsersDetails($userEmail);        
 
+        $dateFormatUs = $sm->get('viewhelpermanager')->get('DateFormatIndia');
+        $usersData->userDob = $dateFormatUs( $usersData->userDob );
+                
         $form = new AddNewUserForm($sm , $dbAdapter, 'process-update-user-profile' );
         if($usersData)
         {

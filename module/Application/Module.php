@@ -78,6 +78,11 @@ class Module
                     $locator = $sm->getServiceLocator();
                     $viewHelper = new View\Helper\DateFormatIndia();
                     return $viewHelper;
+                },
+                'DateFormatDatabase' => function ($sm) {
+                    $locator = $sm->getServiceLocator();
+                    $viewHelper = new View\Helper\DateFormatDatabase();
+                    return $viewHelper;
                 }
             ),
         );

@@ -45,17 +45,20 @@ class Module
             $accessCheck = new AccessControl($sm);
             $isAllowed = $accessCheck-> checkAccess($action,$userTypeId);
 
-//            if(!$isAllowed)
-//            {
-//                $redirectUrl = "/application/index/index";
-//
-//                $response = $e->getResponse();
-//                $response->getHeaders()->addHeaderLine('Location',$redirectUrl);
-//                $response->setStatusCode(302);
-//
-//                $response->sendHeaders();
-//                exit();                    
-//            }                     
+            echo 'controller => '.$controller.'<br />action => '.$action.'<br />userTypeId => '.$userTypeId;
+            
+            if(!$isAllowed)
+            {    
+                die;
+                $redirectUrl = "/application/index/index";
+
+                $response = $e->getResponse();
+                $response->getHeaders()->addHeaderLine('Location',$redirectUrl);
+                $response->setStatusCode(302);
+
+                $response->sendHeaders();
+                exit();                    
+            }                     
 
             },1000);						
 	}
@@ -93,6 +96,20 @@ class Module
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new ServiceGoups());
                     return new TableGateway('service_groups',$dbAdapter,null,$resultSetPrototype);
+                },
+                'Authorization\Model\ServicesTable' => function($sm)
+                {                                        
+                    $dbAdapter = $sm-> get('Zend\Db\Adapter\Adapter');
+                    $tableGateway = $sm->get('ServicesTableGateway');
+                    $table = new ServicesTable($dbAdapter,$tableGateway);
+                    return $table;
+                },
+                'ServicesTableGateway' => function($sm)
+                {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new Services());
+                    return new TableGateway('services',$dbAdapter,null,$resultSetPrototype);
                 }
            ),
         );

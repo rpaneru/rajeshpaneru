@@ -4,7 +4,7 @@ namespace Users\Model;
 class Users 
 {    
     public $id;
-    public $userNme;
+    public $userName;
     public $userDob;
     public $userGender;
     public $userMobile;
