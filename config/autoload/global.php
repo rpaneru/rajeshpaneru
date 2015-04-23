@@ -26,7 +26,8 @@ return array(
     ),
     'module_layouts' => array(
         'Application' => 'layout/application.phtml',
-        'Users' => 'layout/users.phtml'
+        'Users' => 'layout/users.phtml',
+        'Authorization' => 'layout/users.phtml'
     ),
     'custom_paths' => array(
         'userImagePath' => 'http://rajeshpaneru/user_images/'

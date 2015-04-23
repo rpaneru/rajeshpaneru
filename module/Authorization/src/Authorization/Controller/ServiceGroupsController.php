@@ -19,9 +19,9 @@ class ServiceGroupsController extends AbstractActionController
     {      
         $sm = $this->getServiceLocator();      
         
-        $serviceGroupDetails = $sm->get('Authorization\Model\ServiceGroupsTable')->getServiceGroupDetails( '' );
+        $serviceGroupDetails  = $sm->get('Authorization\Model\ServiceGroupsTable')->getServiceGroupDetails( '' );
         
-        $view = new ViewModel(array( 'serviceGroupDetails' => $serviceGroupDetails ));
+        $view = new ViewModel(array( 'serviceGroupDetails' => $serviceGroupDetails  ));
         return $view;
     }
 }

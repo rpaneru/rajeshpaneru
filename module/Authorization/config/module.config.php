@@ -3,10 +3,10 @@ return array(
     'router' => array(
         'routes' => array(
             
-            'users' => array(
+            'authorization' => array(
                 'type'    => 'Literal',
                 'options' => array(
-                    'route'    => '/users',
+                    'route'    => '/authorization',
                     'defaults' => array(
                         '__NAMESPACE__' => 'Authorization\Controller',
                         'controller'    => 'ServiceGroups',
@@ -49,7 +49,7 @@ return array(
     'controllers' => array(
         'invokables' => array(
             'Authorization\Controller\ServiceGroups' => 'Authorization\Controller\ServiceGroupsController',
-            'Authorization\Controller\Service' => 'Authorization\Controller\ServicesController',
+            'Authorization\Controller\Services' => 'Authorization\Controller\ServicesController',
         ),
     ),
     'view_manager' => array(

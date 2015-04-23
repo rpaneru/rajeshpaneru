@@ -12,8 +12,10 @@ use Zend\Authentication\AuthenticationService;
 use Zend\Authentication\Adapter\DbTable as DbTableAuthAdapter;
 
 use Authorization\Model\AccessControl;
-use Authorization\Model\ServiceGoups;
-use Authorization\Model\ServiceGoupsTable;
+use Authorization\Model\ServiceGroups;
+use Authorization\Model\ServiceGroupsTable;
+use Authorization\Model\Services;
+use Authorization\Model\ServicesTable;
 
 class Module
 {
@@ -49,7 +51,6 @@ class Module
             
             if(!$isAllowed)
             {    
-                die;
                 $redirectUrl = "/application/index/index";
 
                 $response = $e->getResponse();
@@ -79,22 +80,22 @@ class Module
             );
         }
         
-        public function getServiceConfig()
+    public function getServiceConfig()
     {
         return array(
            'factories' => array(                
-                'Authorization\Model\ServiceGoupsTable' => function($sm)
+                'Authorization\Model\ServiceGroupsTable' => function($sm)
                 {                                        
                     $dbAdapter = $sm-> get('Zend\Db\Adapter\Adapter');
-                    $tableGateway = $sm->get('ServiceGoupsTableGateway');
-                    $table = new ServiceGoupsTable($dbAdapter,$tableGateway);
+                    $tableGateway = $sm->get('ServiceGroupsTableGateway');
+                    $table = new ServiceGroupsTable($dbAdapter,$tableGateway);
                     return $table;
                 },
-                'ServiceGoupsTableGateway' => function($sm)
+                'ServiceGroupsTableGateway' => function($sm)
                 {
                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
                     $resultSetPrototype = new ResultSet();
-                    $resultSetPrototype->setArrayObjectPrototype(new ServiceGoups());
+                    $resultSetPrototype->setArrayObjectPrototype(new ServiceGroups());
                     return new TableGateway('service_groups',$dbAdapter,null,$resultSetPrototype);
                 },
                 'Authorization\Model\ServicesTable' => function($sm)
@@ -116,5 +117,4 @@ class Module
     }
     
 }
-
 ?>

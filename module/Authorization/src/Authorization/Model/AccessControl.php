@@ -1,5 +1,4 @@
 <?php
-
 namespace Authorization\Model;
 
 use Zend\Db\Sql\Sql;
@@ -29,5 +28,4 @@ class AccessControl
         return $result->count();        
     }
 }
-
 ?>

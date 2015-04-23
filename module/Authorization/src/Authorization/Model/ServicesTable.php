@@ -20,17 +20,14 @@ class ServicesTable
         $this-> dbAdapter = $dbAdapter;
         $this-> tableGateway = $tableGateway;
     }
-    public function getServiceGroups()
+    public function getServiceDetails($id)
     {
-        $userEmail = (string) $userEmail;  
+        $id = (string) $id;  
         $sql = new Sql($this->tableGateway->getAdapter());
         $select = $sql->select();
-        $select->columns(array('userName','userEmail','userDob','userMobile','userFax','userGender','userImage','userStatus','userTypeId'));
-        $select->quantifier('DISTINCT');
-        $select->from(array('u' => 'users'));
-        $select->join(array('a' => 'addresses'), 'u.userAddressId = a.id', array('address','city','district','stateId','countryId','zipCode'), "left");
-        $select->join(array('is' => 'indian_states'), 'a.stateId = is.id', array('stateName'), "left");
-        $select->join(array('c' => 'countries'), 'a.countryId = c.id', array('countryName'), "left");
+        $select->columns(array('serviceName','controller','action','serviceDescription','serviceStatus'));
+        $select->from(array('s' => 'services'));
+        $select->join(array('sg' => 'service_groups'), 's.serviceGroupId = sg.id', array('serviceGroupName'), "left");
         
         //echo $select->getSqlString($this-> tableGateway->getAdapter()->getPlatform());
         
@@ -43,7 +40,7 @@ class ServicesTable
             $resultSet->initialize($result);
         }
         
-        if($userEmail)
+        if($id)
         {
             return $resultSet->current();                  
         }
