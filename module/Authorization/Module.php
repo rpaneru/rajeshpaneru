@@ -47,19 +47,18 @@ class Module
             $accessCheck = new AccessControl($sm);
             $isAllowed = $accessCheck-> checkAccess($action,$userTypeId);
 
-            echo 'controller => '.$controller.'<br />action => '.$action.'<br />userTypeId => '.$userTypeId;
+            //echo 'controller => '.$controller.'<br />action => '.$action.'<br />userTypeId => '.$userTypeId;
             
             if(!$isAllowed)
             {
-                die;
-//                $redirectUrl = "/application/index/index";
-//
-//                $response = $e->getResponse();
-//                $response->getHeaders()->addHeaderLine('Location',$redirectUrl);
-//                $response->setStatusCode(302);
-//
-//                $response->sendHeaders();
-//                exit();                    
+                $redirectUrl = "/application/index/index";
+
+                $response = $e->getResponse();
+                $response->getHeaders()->addHeaderLine('Location',$redirectUrl);
+                $response->setStatusCode(302);
+
+                $response->sendHeaders();
+                exit();                    
             }                     
 
             },1000);						

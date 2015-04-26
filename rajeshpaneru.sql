@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 23, 2015 at 05:22 PM
+-- Generation Time: Apr 26, 2015 at 07:15 PM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -30,25 +30,29 @@ CREATE TABLE IF NOT EXISTS `access_control` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `serviceId` int(11) NOT NULL,
   `userTypeId` enum('1','2','3','4') NOT NULL,
-  `description` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
 
 --
 -- Dumping data for table `access_control`
 --
 
-INSERT INTO `access_control` (`id`, `serviceId`, `userTypeId`, `description`) VALUES
-(1, 1, '1', 'Home page is visible for all users.'),
-(2, 2, '1', 'Login Page is visible for everyone'),
-(3, 3, '1', 'Authontication should be process  for everyone'),
-(4, 4, '4', 'Super Admin dashboard will be visible only for super admin'),
-(5, 6, '4', 'User''s listing service will be visible for super admin'),
-(6, 7, '4', 'Add new User service will be visible for super admin\r\n'),
-(7, 8, '4', 'Update user profile service will be visible for super admin\r\n'),
-(8, 9, '4', 'Delete user profile service will be visible for super admin\r\n'),
-(9, 10, '4', ''),
-(10, 11, '4', '');
+INSERT INTO `access_control` (`id`, `serviceId`, `userTypeId`) VALUES
+(1, 1, '1'),
+(2, 2, '1'),
+(3, 3, '1'),
+(4, 4, '4'),
+(5, 6, '4'),
+(6, 7, '4'),
+(7, 8, '4'),
+(8, 9, '4'),
+(9, 10, '4'),
+(10, 11, '4'),
+(11, 12, '4'),
+(12, 13, '1'),
+(13, 14, '1'),
+(14, 15, '1'),
+(15, 16, '1');
 
 -- --------------------------------------------------------
 
@@ -59,14 +63,14 @@ INSERT INTO `access_control` (`id`, `serviceId`, `userTypeId`, `description`) VA
 CREATE TABLE IF NOT EXISTS `addresses` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `address` text NOT NULL,
-  `city` text NOT NULL,
-  `district` text NOT NULL,
+  `city` varchar(255) NOT NULL,
+  `district` varchar(255) NOT NULL,
   `stateId` int(11) NOT NULL,
   `countryId` int(11) NOT NULL,
   `zipCode` int(6) NOT NULL,
   `createdDateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `createdBy` text NOT NULL,
-  `sessionId` text NOT NULL,
+  `createdBy` varchar(255) NOT NULL,
+  `sessionId` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
@@ -379,13 +383,63 @@ INSERT INTO `countries` (`id`, `countryName`, `countryCode`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `email_relayer`
+--
+
+CREATE TABLE IF NOT EXISTS `email_relayer` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `fromEmail` varchar(255) NOT NULL,
+  `relayerHost` varchar(255) NOT NULL,
+  `relayerSsl` varchar(255) NOT NULL,
+  `relayerUserName` varchar(255) NOT NULL,
+  `relayerPassword` varchar(255) NOT NULL,
+  `relayerPort` int(3) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `email_relayer`
+--
+
+INSERT INTO `email_relayer` (`id`, `fromEmail`, `relayerHost`, `relayerSsl`, `relayerUserName`, `relayerPassword`, `relayerPort`) VALUES
+(1, 'support@rajeshpaneru.com', 'smtp.mandrillapp.com', 'tls', 'rpaneru1986@gmail.com', 'sVvyzUoDFPQKCKnDl_nYhw', 587);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `email_templates`
+--
+
+CREATE TABLE IF NOT EXISTS `email_templates` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `emailType` varchar(255) NOT NULL,
+  `emailTitle` text NOT NULL,
+  `emailSubject` text NOT NULL,
+  `emailBody` text NOT NULL,
+  `templateStatus` enum('Active','Inactive') NOT NULL DEFAULT 'Active',
+  `createdDateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `createdBy` varchar(255) NOT NULL,
+  `sessionId` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `email_templates`
+--
+
+INSERT INTO `email_templates` (`id`, `emailType`, `emailTitle`, `emailSubject`, `emailBody`, `templateStatus`, `createdDateTime`, `createdBy`, `sessionId`) VALUES
+(1, 'forgot-password', 'forgot-password', 'Forgot Password', '<html xmlns="http://www.w3.org/1999/xhtml">\n    <head>\n      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">\n      <meta name="viewport" content="width=device-width, initial-scale=1.0">\n      <title>Rajesh Paneru - Reset Password</title>\n      <style type="text/css">\n         /* Client-specific Styles */\n         #outlook a {padding:0;} /* Force Outlook to provide a "view in browser" menu link. */\n         body{width:100% !important; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; margin:0; padding:0;}\n         /* Prevent Webkit and Windows Mobile platforms from changing default font sizes, while not breaking desktop design. */\n         .ExternalClass {width:100%;} /* Force Hotmail to display emails at full width */\n         .ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div {line-height: 100%;} /* Force Hotmail to display normal line spacing.  More on that: http://www.emailonacid.com/forum/viewthread/43/ */\n         #backgroundTable {margin:0; padding:0; width:100% !important; line-height: 100% !important;}\n         img {outline:none; text-decoration:none;border:none; -ms-interpolation-mode: bicubic;}\n         a img {border:none;}\n         .image_fix {display:block;}\n         p {margin: 0px 0px !important;}\n         \n         table td {border-collapse: collapse;}\n         table { border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt; }\n         /*a {color: #e95353;text-decoration: none;text-decoration:none!important;}*/\n         /*STYLES*/\n         table[class=full] { width: 100%; clear: both; }\n         \n         /*################################################*/\n         /*IPAD STYLES*/\n         /*################################################*/\n         @media only screen and (max-width: 640px) {\n         a[href^="tel"], a[href^="sms"] {\n         text-decoration: none;\n         color: #ffffff; /* or whatever your want */\n         pointer-events: none;\n         cursor: default;\n         }\n         .mobile_link a[href^="tel"], .mobile_link a[href^="sms"] {\n         text-decoration: default;\n         color: #ffffff !important;\n         pointer-events: auto;\n         cursor: default;\n         }\n         table[class=devicewidth] {width: 440px!important;text-align:center!important;}\n         table[class=devicewidthinner] {width: 420px!important;text-align:center!important;}\n         table[class="sthide"]{display: none!important;}\n         img[class="bigimage"]{width: 420px!important;height:219px!important;}\n         img[class="col2img"]{width: 420px!important;height:258px!important;}\n         img[class="image-banner"]{width: 440px!important;height:106px!important;}\n         td[class="menu"]{text-align:center !important; padding: 0 0 10px 0 !important;}\n         td[class="logo"]{padding:10px 0 5px 0!important;margin: 0 auto !important;}\n         img[class="logo"]{padding:0!important;margin: 0 auto !important;}\n\n         }\n         /*##############################################*/\n         /*IPHONE STYLES*/\n         /*##############################################*/\n         @media only screen and (max-width: 480px) {\n         a[href^="tel"], a[href^="sms"] {\n         text-decoration: none;\n         color: #ffffff; /* or whatever your want */\n         pointer-events: none;\n         cursor: default;\n         }\n         .mobile_link a[href^="tel"], .mobile_link a[href^="sms"] {\n         text-decoration: default;\n         color: #ffffff !important; \n         pointer-events: auto;\n         cursor: default;\n         }\n         table[class=devicewidth] {width: 280px!important;text-align:center!important;}\n         table[class=devicewidthinner] {width: 260px!important;text-align:center!important;}\n         table[class="sthide"]{display: none!important;}\n         img[class="bigimage"]{width: 260px!important;height:136px!important;}\n         img[class="col2img"]{width: 260px!important;height:160px!important;}\n         img[class="image-banner"]{width: 280px!important;height:68px!important;}\n         \n         }\n      </style>\n\n      \n   </head>\n<body>\n<div class="block">\n   <!-- Start of preheader -->\n   <table width="100%" bgcolor="#f6f4f5" cellpadding="0" cellspacing="0" border="0" id="backgroundTable" st-sortable="preheader">\n      <tbody>\n         <tr>\n            <td width="100%">\n               <table width="580" cellpadding="0" cellspacing="0" border="0" align="center" class="devicewidth">\n                  <tbody>\n                     <!-- Spacing -->\n                     <tr>\n                        <td width="100%" height="5"></td>\n                     </tr>\n                     <!-- Spacing -->\n                     <tr>\n                        <td align="right" valign="middle" style="font-family: Helvetica, arial, sans-serif; font-size: 10px;color: #999999" st-content="preheader">\n                           If you cannot read this email, please  <a class="hlite" href="#" style="text-decoration: none; color: #0db9ea">click here</a> \n                        </td>\n                     </tr>\n                     <!-- Spacing -->\n                     <tr>\n                        <td width="100%" height="5"></td>\n                     </tr>\n                     <!-- Spacing -->\n                  </tbody>\n               </table>\n            </td>\n         </tr>\n      </tbody>\n   </table>\n   <!-- End of preheader -->\n</div>\n<div class="block">\n   <!-- start of header -->\n   <table width="100%" bgcolor="#f6f4f5" cellpadding="0" cellspacing="0" border="0" id="backgroundTable" st-sortable="header">\n      <tbody>\n         <tr>\n            <td>\n               <table width="580" bgcolor="#0db9ea" cellpadding="0" cellspacing="0" border="0" align="center" class="devicewidth" hlitebg="edit" shadow="edit">\n                  <tbody>\n                     <tr>\n                        <td>\n                           <!-- logo -->\n                           <table width="180" cellpadding="0" cellspacing="0" border="0" align="left" class="devicewidth">\n                              <tbody>\n                                 <tr>\n                                    <td valign="middle" width="270" style="padding: 10px 0 10px 20px;" class="logo">\n                                       <div class="imgpop">\n                                          <a href="#"><img src="logo.png" alt="logo" border="0" style="display:block; border:none; outline:none; text-decoration:none;" st-image="edit" class="logo"></a>\n                                       </div>\n                                    </td>\n                                 </tr>\n                              </tbody>\n                           </table>\n                           <!-- End of logo -->\n                           <!-- menu -->\n                           <table width="380" cellpadding="0" cellspacing="0" border="0" align="right" class="devicewidth">\n                              <tbody>\n                                 <tr>\n                                     <td width="280" valign="middle" style="font-family: Helvetica, Arial, sans-serif;font-size: 14px; color: #ffffff;line-height: 24px; padding: 10px 0;" align="right" class="menu" st-content="menu">\n                                       <a href="#" style="text-decoration: none; color: #ffffff;">HOME</a>\n                                       &nbsp;|&nbsp;\n                                       <a href="#" style="text-decoration: none; color: #ffffff;">ABOUT</a>\n                                       &nbsp;|&nbsp;\n                                       <a href="#" style="text-decoration: none; color: #ffffff;">SERVICE</a>\n                                       &nbsp;|&nbsp;\n                                       <a href="#" style="text-decoration: none; color: #ffffff;">CONTACT</a>\n                                    </td>                                    \n                                 </tr>\n                              </tbody>\n                           </table>\n                           <!-- End of Menu -->\n                        </td>\n                     </tr>\n                  </tbody>\n               </table>\n            </td>\n         </tr>\n      </tbody>\n   </table>\n   <!-- end of header -->\n</div><div class="block">\n   <!-- image + text -->\n   <table width="100%" bgcolor="#f6f4f5" cellpadding="0" cellspacing="0" border="0" id="backgroundTable" st-sortable="bigimage">\n      <tbody>\n         <tr>\n            <td>\n               <table bgcolor="#ffffff" width="580" align="center" cellspacing="0" cellpadding="0" border="0" class="devicewidth" modulebg="edit">\n                  <tbody>\n                     <tr>\n                        <td width="100%" height="20"></td>\n                     </tr>\n                     <tr>\n                        <td>\n                           <table width="540" align="center" cellspacing="0" cellpadding="0" border="0" class="devicewidthinner">\n                              <tbody>                                 \n                                 <!-- title -->\n                                 <tr>\n                                    <td style="font-family: Helvetica, arial, sans-serif; font-size: 18px; color: #333333; text-align:left;line-height: 20px;" st-title="rightimage-title">\n                                    RESET PASSWORD\n                                    </td>\n                                 </tr>\n                                 <!-- end of title -->\n                                 <!-- Spacing -->\n                                 <tr>\n                                    <td width="100%" height="20"></td>\n                                 </tr>\n                                 <!-- Spacing -->\n                                 <!-- content -->\n                                 <tr>\n                                    <td style="font-family: Helvetica, arial, sans-serif; font-size: 13px; color: #95a5a6; text-align:left;line-height: 24px;" st-content="rightimage-paragraph">\n                                       Hello {{{User Name}}},<br />\n                                        <br />\n                                        We have received new password request for your account.<br />\n                                        If this request was initiated by you, please click on following link or submit following form and change your password:<br />\n                                        <a class="hlite" style="text-decoration: none; color: #0db9ea" href="{{{Link}}}">{{{Link}}}</a><br />\n                                        <br />\n                                        This request is valid for only one hour.<br />\n                                        <br />\n                                        Best regards,<br />\n                                        Support team\n                                    </td>\n                                 </tr>\n                                 <!-- end of content -->\n                                 <!-- Spacing -->\n                                 <tr>\n                                    <td width="100%" height="10"></td>\n                                 </tr>\n                                 <tr>\n                                    <td width="100%" height="20"></td>\n                                 </tr>\n                                 <!-- Spacing -->\n                              </tbody>\n                           </table>\n                        </td>\n                     </tr>\n                  </tbody>\n               </table>\n            </td>\n         </tr>\n      </tbody>\n   </table>\n</div>\n<div class="block">\n   <!-- Start of preheader -->\n   <table width="100%" bgcolor="#f6f4f5" cellpadding="0" cellspacing="0" border="0" id="backgroundTable" st-sortable="postfooter">\n      <tbody>\n         <tr>\n            <td width="100%">\n               <table width="580" cellpadding="0" cellspacing="0" border="0" align="center" class="devicewidth">\n                  <tbody>\n                     <!-- Spacing -->\n                     <tr>\n                        <td width="100%" height="5"></td>\n                     </tr>\n                     <!-- Spacing -->\n                     <tr>\n                        <td align="center" valign="middle" style="font-family: Helvetica, arial, sans-serif; font-size: 10px;color: #999999" st-content="preheader">\n                            All right reserved &copy;2014-2015 Rajesh Paneru\n                        </td>\n                     </tr>\n                     <!-- Spacing -->\n                     <tr>\n                        <td width="100%" height="5"></td>\n                     </tr>\n                     <!-- Spacing -->\n                  </tbody>\n               </table>\n            </td>\n         </tr>\n      </tbody>\n   </table>\n   <!-- End of preheader -->\n</div>\n\n</body></html>\n', 'Active', '2015-04-26 10:46:55', '', '');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `indian_states`
 --
 
 CREATE TABLE IF NOT EXISTS `indian_states` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `stateName` text NOT NULL,
-  `capitalName` text NOT NULL,
+  `stateName` varchar(255) NOT NULL,
+  `capitalName` varchar(255) NOT NULL,
   `unionTerritory` enum('Yes','No') NOT NULL DEFAULT 'No',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=36 ;
@@ -434,6 +488,30 @@ INSERT INTO `indian_states` (`id`, `stateName`, `capitalName`, `unionTerritory`)
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `reset_password`
+--
+
+CREATE TABLE IF NOT EXISTS `reset_password` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `userEmail` varchar(255) NOT NULL,
+  `resetKey` varchar(255) NOT NULL,
+  `createdDateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `createdBy` varchar(255) NOT NULL,
+  `sessionId` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `resetKey` (`resetKey`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `reset_password`
+--
+
+INSERT INTO `reset_password` (`id`, `userEmail`, `resetKey`, `createdDateTime`, `createdBy`, `sessionId`) VALUES
+(1, 'rpaneru1986@gmail.com', '6a451ec731bb7038b0797c7d7a5ed4c6', '2015-04-26 03:36:27', 'rpaneru1986@gmail.com', '');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `services`
 --
 
@@ -441,16 +519,16 @@ CREATE TABLE IF NOT EXISTS `services` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `serviceGroupId` int(11) NOT NULL,
   `serviceName` varchar(256) NOT NULL,
-  `controller` text NOT NULL,
-  `action` text NOT NULL,
+  `controller` varchar(255) NOT NULL,
+  `action` varchar(255) NOT NULL,
   `serviceDescription` text NOT NULL,
   `serviceStatus` enum('Active','Inactive') NOT NULL DEFAULT 'Inactive',
   `createdDateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `createdBy` text NOT NULL,
-  `sessionId` text NOT NULL,
+  `createdBy` varchar(255) NOT NULL,
+  `sessionId` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `serviceName` (`serviceName`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=12 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=17 ;
 
 --
 -- Dumping data for table `services`
@@ -466,7 +544,12 @@ INSERT INTO `services` (`id`, `serviceGroupId`, `serviceName`, `controller`, `ac
 (8, 1, 'Update User Profile Service', 'Users\\Controller\\Index', 'update-user-profile', '', 'Active', '0000-00-00 00:00:00', '', ''),
 (9, 1, 'Delete User Profile', 'Users\\Controller\\Index', 'delete-user-profile', '', 'Active', '0000-00-00 00:00:00', '', ''),
 (10, 3, 'Serice Group Management', 'Authorization\\Controller\\ServiceGroups ', 'list-service-groups', '', 'Active', '2015-04-19 16:57:39', '', ''),
-(11, 3, 'List-services', 'Authorization\\Controller\\Services', 'list-services', '', 'Active', '2015-04-19 17:32:33', '', '');
+(11, 3, 'List-services', 'Authorization\\Controller\\Services', 'list-services', '', 'Active', '2015-04-19 17:32:33', '', ''),
+(12, 1, 'LogOut', 'Users\\Controller\\Index', 'log-out', '', 'Active', '2015-04-26 02:05:26', '', ''),
+(13, 1, 'Forgot Password', 'Users\\Controller\\Index', 'forgot-password', '', 'Active', '2015-04-26 02:40:08', '', ''),
+(14, 1, 'Reset Password', 'Users\\Controller\\Index', 'reset-password', '', 'Active', '2015-04-26 03:01:41', '', ''),
+(15, 1, 'Process Reset Password', 'Users\\Controller\\Index', 'process-reset-password', '', 'Active', '2015-04-26 03:37:53', '', ''),
+(16, 1, 'Process Forgot Password', 'Users\\Controller\\Index', 'process-forgot-password', '', 'Active', '2015-04-26 04:46:43', '', '');
 
 -- --------------------------------------------------------
 
@@ -480,8 +563,8 @@ CREATE TABLE IF NOT EXISTS `service_groups` (
   `serviceGroupDescription` text NOT NULL,
   `serviceGroupStatus` enum('Active','Inactive') NOT NULL DEFAULT 'Inactive',
   `createdDateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `createdBy` text NOT NULL,
-  `sessionId` text NOT NULL,
+  `createdBy` varchar(255) NOT NULL,
+  `sessionId` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `serviceGroupName` (`serviceGroupName`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
@@ -507,16 +590,16 @@ CREATE TABLE IF NOT EXISTS `users` (
   `userDob` date NOT NULL,
   `userGender` enum('Male','Female') NOT NULL,
   `userMobile` bigint(12) NOT NULL,
-  `userFax` text NOT NULL,
+  `userFax` varchar(255) NOT NULL,
   `userEmail` text NOT NULL,
-  `userPassword` text NOT NULL,
+  `userPassword` varchar(255) NOT NULL,
   `userAddressId` int(11) NOT NULL,
-  `userImage` text NOT NULL,
+  `userImage` varchar(255) NOT NULL,
   `userTypeId` int(1) NOT NULL,
   `userStatus` enum('Active','Inactive') NOT NULL DEFAULT 'Inactive',
   `createdDateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `createdBy` text NOT NULL,
-  `sessionId` text NOT NULL,
+  `createdBy` varchar(255) NOT NULL,
+  `sessionId` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
@@ -555,7 +638,7 @@ CREATE TABLE IF NOT EXISTS `user_login_history` (
 
 CREATE TABLE IF NOT EXISTS `user_types` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `userType` text NOT NULL,
+  `userType` varchar(255) NOT NULL,
   `description` text NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;

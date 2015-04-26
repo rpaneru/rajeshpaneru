@@ -123,10 +123,10 @@ class IndexController extends AbstractActionController
             $toEmail = $postData['userEmail'];
             $fromEmail = 'support@rajeshpaneru.com';
  
-            $getRowCountHelper = $sm->get('viewhelpermanager')->get('getRowCount');
-            $count = $getRowCountHelper('users', 'id', 'userEmail', $toEmail);
+            $getValue = $sm->get('viewhelpermanager')->get('getValue');
+            $userName = $getValue('users', 'userName', 'userEmail', $toEmail);
             
-            if($count == 1)
+            if($userName)
             {
                 $resetKey = md5('rp'.uniqid().$toEmail.date('Y-m-d H:i:s').rand());
                 $link = $renderer->basePath('/users/index/reset-password/'.$resetKey);     
@@ -142,9 +142,9 @@ class IndexController extends AbstractActionController
                 
                 $emailBody = str_replace( '{{{User Name}}}' ,$userName, $emailBody);
                 $emailBody = str_replace( '{{{Link}}}' ,$link, $emailBody);
-                echo $emailBody = str_replace( '{{{Reset Key}}}' ,$resetKey, $emailBody);
-                
-                die;
+                //$emailBody = str_replace( '{{{Reset Key}}}' ,$resetKey, $emailBody);
+                $emailBody = str_replace( '{{{Link}}}' ,$resetKey, $emailBody);
+
                 $relayerHost = $emailRelayerData->relayerHost;
                 $relayerSsl = $emailRelayerData->relayerSsl;
                 $relayerUserName = $emailRelayerData->fromEmail;
