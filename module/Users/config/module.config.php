@@ -29,6 +29,18 @@ return array(
                     ),
                 ),
             ),
+            
+            'reset-password' => array(
+                    'type' => 'segment',
+                    'options' => array(
+                        'route' => '/users/index/reset-password[/:resetkey]',
+                        'defaults' => array(
+                            'controller' => 'users\Controller\Index',
+                            'action' => 'reset-password'
+                        ),
+                    )
+            ),
+            
         ),
     ),
     'service_manager' => array(

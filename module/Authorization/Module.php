@@ -50,15 +50,16 @@ class Module
             echo 'controller => '.$controller.'<br />action => '.$action.'<br />userTypeId => '.$userTypeId;
             
             if(!$isAllowed)
-            {    
-                $redirectUrl = "/application/index/index";
-
-                $response = $e->getResponse();
-                $response->getHeaders()->addHeaderLine('Location',$redirectUrl);
-                $response->setStatusCode(302);
-
-                $response->sendHeaders();
-                exit();                    
+            {
+                die;
+//                $redirectUrl = "/application/index/index";
+//
+//                $response = $e->getResponse();
+//                $response->getHeaders()->addHeaderLine('Location',$redirectUrl);
+//                $response->setStatusCode(302);
+//
+//                $response->sendHeaders();
+//                exit();                    
             }                     
 
             },1000);						

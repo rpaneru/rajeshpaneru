@@ -76,10 +76,9 @@ class IndexController extends AbstractActionController
                        
             if ($result->isValid() && $userStatus == 'Active')
             {
-
                 $data = $auth -> getAdapter()-> getResultRowObject(null,'userPassword');
                 $auth->getStorage()->write($data);
-
+                
                 if( $postData['rememberMe'] == 'Yes' )
                 {   
                     $cookieEmail = new  \Zend\Http\Header\SetCookie('userEmail', $auth-> getIdentity()-> userEmail, time() + 60 * 60 , '/');
@@ -90,8 +89,6 @@ class IndexController extends AbstractActionController
                     $cookieEmail = new \Zend\Http\Header\SetCookie('userEmail','',strtotime('-1 Year', time()), '/' );
                     $this->getResponse()->getHeaders()->addHeader($cookieEmail);
                 }
-                
-
                 if( $auth-> getIdentity()-> userTypeId == 4 )
                 {                    
                     $url = $renderer->basePath('users/index/dashboard-super-admin');
@@ -108,7 +105,47 @@ class IndexController extends AbstractActionController
     
     public function forgotPasswordAction()
     {
-        return new ViewModel();
+        $view = new ViewModel();
+        $view->setTerminal(true);
+        return $view;
+    }
+    
+    public function resetPasswordAction()
+    { 
+        $view = new ViewModel();
+        $view->setTerminal(true);
+        return $view;
+    }
+    
+    public function processResetPasswordAction()
+    {      
+        $sm = $this->getServiceLocator();            
+        $renderer = $sm ->get('Zend\View\Renderer\RendererInterface');
+        $auth = $sm-> get('AuthService');
+          
+        $request = $this->getRequest(); 
+        if($request-> isPost())
+        {
+            $postData = $request-> getPost();
+            
+            $password = $postData['password'];
+            $cnfPassword = $postData['cnfPassword'];
+            $resetKey = $postData['resetKey'];
+            
+            $helper = $sm->get('viewhelpermanager')->get('getValue');
+            $userStatus = $helper('users', 'userStatus', 'userEmail', $userEmail);
+                       
+            if ($userStatus == 'Active')
+            {
+                $url = $renderer->basePath('users/index/login');
+                return $this->redirect()->toUrl( $url );               
+            }
+            else
+            {                    
+                $url = $renderer->basePath('users/index/login');
+                return $this->redirect()->toUrl( $url );
+            }
+        }                
     }
     
     public function dashboardSuperAdminAction()
