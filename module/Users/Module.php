@@ -15,9 +15,10 @@ use Zend\Authentication\Adapter\DbTable as DbTableAuthAdapter;
 
 use Users\Model\Users;
 use Users\Model\UsersTable;
-
 use Users\Model\UserTypes;
 use Users\Model\UserTypesTable;
+use Users\Model\ResetPassword;
+use Users\Model\ResetPasswordTable;
 
 use Users\Form\AddNewUserForm;
 
@@ -122,6 +123,21 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new UserTypes());
                     return new TableGateway('user_types',$dbAdapter,null,$resultSetPrototype);
+                },
+                        
+                'Users\Model\ResetPasswordTable' => function($sm)
+                {                                        
+                    $dbAdapter = $sm-> get('Zend\Db\Adapter\Adapter');
+                    $tableGateway = $sm->get('ResetPasswordTableGateway');
+                    $table = new ResetPasswordTable($dbAdapter,$tableGateway);
+                    return $table;
+                },
+                'ResetPasswordTableGateway' => function($sm)
+                {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new ResetPassword());
+                    return new TableGateway('reset_password',$dbAdapter,null,$resultSetPrototype);
                 }
            ),
         );

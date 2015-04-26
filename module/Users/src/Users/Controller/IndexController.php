@@ -7,17 +7,11 @@ use Zend\View\Model\ViewModel;
 use Zend\Http\Header\SetCookie;
 use Zend\Db\Adapter\Adapter;
 
-
 use Zend\Mail\Message;
 use Zend\Mime\Message as MimeMessage;
 use Zend\Mime\Part as MimePart;
 use Zend\Mail\Transport\Smtp as SmtpTransport;
 use Zend\Mail\Transport\SmtpOptions;
-
-
-/*use Users\Model\Users;
-use Users\Model\UsersTable;
-use Users\Model\RPAuthStorage;*/
 
 use Users\Form\AddNewUserForm;
 
@@ -134,6 +128,9 @@ class IndexController extends AbstractActionController
             
             if($count == 1)
             {
+                $resetKey = md5('rp'.uniqid().$toEmail.date('Y-m-d H:i:s').rand());
+                $link = $renderer->basePath('/users/index/reset-password/'.$resetKey);     
+                
                 $emailRelayerTable = $sm-> get('Application\Model\EmailRelayerTable');        
                 $emailRelayerData = $emailRelayerTable->getRelaierData($fromEmail);                                
                 
@@ -142,7 +139,12 @@ class IndexController extends AbstractActionController
                 
                 $emailSubject = $emailBodyData->emailSubject;            
                 $emailBody = $emailBodyData->emailBody;
-            
+                
+                $emailBody = str_replace( '{{{User Name}}}' ,$userName, $emailBody);
+                $emailBody = str_replace( '{{{Link}}}' ,$link, $emailBody);
+                echo $emailBody = str_replace( '{{{Reset Key}}}' ,$resetKey, $emailBody);
+                
+                die;
                 $relayerHost = $emailRelayerData->relayerHost;
                 $relayerSsl = $emailRelayerData->relayerSsl;
                 $relayerUserName = $emailRelayerData->fromEmail;
@@ -188,7 +190,18 @@ class IndexController extends AbstractActionController
     
     public function resetPasswordAction()
     { 
-        $view = new ViewModel();
+        $sm = $this->getServiceLocator(); 
+        $renderer = $sm ->get('Zend\View\Renderer\RendererInterface');  
+        
+        $resetKey = $this->params()->fromRoute('resetkey');
+        
+        $ResetPasswordTable = $sm-> get('Users\Model\ResetPasswordTable');        
+        $ResetPasswordData = $ResetPasswordTable->getResetKeyDetails($resetKey);
+        
+        $usersTable = $sm-> get('Users\Model\UsersTable');        
+        $usersData = $usersTable->getUsersDetails($ResetPasswordData->userEmail);
+        
+        $view = new ViewModel(array('usersData'=>$usersData));
         $view->setTerminal(true);
         return $view;
     }
