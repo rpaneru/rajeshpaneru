@@ -8,6 +8,13 @@ use Zend\Http\Header\SetCookie;
 use Zend\Db\Adapter\Adapter;
 
 
+use Zend\Mail\Message;
+use Zend\Mime\Message as MimeMessage;
+use Zend\Mime\Part as MimePart;
+use Zend\Mail\Transport\Smtp as SmtpTransport;
+use Zend\Mail\Transport\SmtpOptions;
+
+
 use Users\Model\Users;
 use Users\Model\UsersTable;
 use Users\Model\RPAuthStorage;
@@ -71,8 +78,8 @@ class IndexController extends AbstractActionController
             
             $result = $this->getAuthService()->authenticate();
             
-            $helper = $sm->get('viewhelpermanager')->get('getValue');
-            $userStatus = $helper('users', 'userStatus', 'userEmail', $userEmail);
+            $getValueHelper = $sm->get('viewhelpermanager')->get('getValue');
+            $userStatus = $getValueHelper('users', 'userStatus', 'userEmail', $userEmail);
                        
             if ($result->isValid() && $userStatus == 'Active')
             {
@@ -110,6 +117,72 @@ class IndexController extends AbstractActionController
         return $view;
     }
     
+    public function processForgotPasswordAction()
+    {
+        $sm = $this->getServiceLocator(); 
+        $renderer = $sm ->get('Zend\View\Renderer\RendererInterface');        
+            
+        $request = $this->getRequest(); 
+        if($request-> isPost())
+        {
+            $postData = $request-> getPost();           
+            $toEmail = $postData['userEmail'];
+            $fromEmail = 'support@rajeshpaneru.com';
+ 
+            $getRowCountHelper = $sm->get('viewhelpermanager')->get('getRowCount');
+            $count = $getRowCountHelper('users', 'id', 'userEmail', $toEmail);
+            
+            if($count == 1)
+            {
+                $emailRelayerTable = $sm-> get('Application\Model\EmailRelayerTable');        
+                $emailRelayerData = $emailRelayerTable->getRelaierData($fromEmail);                                
+                        
+                $emailSubject = 'Reset Password';            
+                $emailBody = 'hello';
+            
+                $relayerHost = $emailRelayerData->relayerHost;
+                $relayerSsl = $emailRelayerData->relayerSsl;
+                $relayerUserName = $emailRelayerData->fromEmail;
+                $relayerPassword = $emailRelayerData->relayerPassword;
+                $relayerPort = $emailRelayerData->relayerPort;
+                            
+                $message = new Message();
+                $message->addTo($toEmail)
+                        ->addFrom($fromEmail)
+                        ->setSubject($emailSubject);
+
+                // Setup SMTP transport using LOGIN authentication
+                $transport = new SmtpTransport();
+
+                $options = new SmtpOptions(array(
+                    'host' => $relayerHost,
+                    'connection_class' => 'login',
+                    'connection_config' => array(
+                        'ssl' => $relayerSsl,
+                        'username' => $relayerUserName,
+                        'password' => $relayerPassword
+                    ),
+                    'port' => $relayerPort,
+                ));
+
+                $html = new MimePart($emailBody);
+                $html->type = "text/html";
+
+                $body = new MimeMessage();
+                $body->addPart($html);
+
+                $message->setBody($body);
+
+                $transport->setOptions($options);
+                $transport->send($message);            
+            }
+        }    
+        
+        $view = new ViewModel();
+        $view->setTerminal(true);
+        return $view;
+    }
+    
     public function resetPasswordAction()
     { 
         $view = new ViewModel();
@@ -118,34 +191,7 @@ class IndexController extends AbstractActionController
     }
     
     public function processResetPasswordAction()
-    {      
-        $sm = $this->getServiceLocator();            
-        $renderer = $sm ->get('Zend\View\Renderer\RendererInterface');
-        $auth = $sm-> get('AuthService');
-          
-        $request = $this->getRequest(); 
-        if($request-> isPost())
-        {
-            $postData = $request-> getPost();
-            
-            $password = $postData['password'];
-            $cnfPassword = $postData['cnfPassword'];
-            $resetKey = $postData['resetKey'];
-            
-            $helper = $sm->get('viewhelpermanager')->get('getValue');
-            $userStatus = $helper('users', 'userStatus', 'userEmail', $userEmail);
-                       
-            if ($userStatus == 'Active')
-            {
-                $url = $renderer->basePath('users/index/login');
-                return $this->redirect()->toUrl( $url );               
-            }
-            else
-            {                    
-                $url = $renderer->basePath('users/index/login');
-                return $this->redirect()->toUrl( $url );
-            }
-        }                
+    {               
     }
     
     public function dashboardSuperAdminAction()

@@ -15,6 +15,9 @@ use Application\Model\IndianStatesTable;
 use Application\Model\Countries;
 use Application\Model\CountriesTable;
 
+use Application\Model\EmailRelayer;
+use Application\Model\EmailRelayerTable;
+
 class Module
 {
     public function onBootstrap(MvcEvent $e)
@@ -121,6 +124,21 @@ class Module
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new Countries());
                     return new TableGateway('countries',$dbAdapter,null,$resultSetPrototype);
+                },
+                        
+                'Application\Model\EmailRelayerTable' => function($sm)
+                {                                        
+                    $dbAdapter = $sm-> get('Zend\Db\Adapter\Adapter');
+                    $tableGateway = $sm->get('EmailRelayerTableGateway');
+                    $table = new EmailRelayerTable($dbAdapter,$tableGateway);
+                    return $table;
+                },
+                'EmailRelayerTableGateway' => function($sm)
+                {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new EmailRelayer());
+                    return new TableGateway('email_relayer',$dbAdapter,null,$resultSetPrototype);
                 }
            ),
         );

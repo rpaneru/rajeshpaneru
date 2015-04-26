@@ -1,6 +1,6 @@
 <?php 
 
-namespace Admin\View\Helper;
+namespace Application\View\Helper;
 
 use Zend\View\Helper\AbstractHelper;
 use Zend\Db\TableGateway\TableGateway;
@@ -12,25 +12,21 @@ class GetRowCount extends AbstractHelper
 		
 	public function __construct($dbAdapter)
 	{
-			$this->dbAdapter = $dbAdapter;
+            $this->dbAdapter = $dbAdapter;
 	}
 
 	
 	public function __invoke($table,$where,$distinct)
 	{	
-		$table = new TableGateway($table,$this->dbAdapter);
-
-        $rowSet = $table->select(function (Select $select) use ($where,$distinct) {
-
+            $table = new TableGateway($table,$this->dbAdapter);
+            $rowSet = $table->select(function (Select $select) use ($where,$distinct) {
 
             if($distinct) $select-> quantifier('distinct');
-            $select-> where($where);
+                $select-> where($where);
+                //echo $select->getSqlString($this->dbAdapter->getPlatform());
+            });
 
-            //echo $select->getSqlString($this->dbAdapter->getPlatform());
-         });
-
-		$count =  $rowSet->count();
-
-		return $count;
+            $count =  $rowSet->count();
+            return $count;
 	}
 }
