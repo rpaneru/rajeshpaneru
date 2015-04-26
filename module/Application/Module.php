@@ -11,12 +11,13 @@ use Zend\Authentication\Adapter\DbTable as DbTableAuthAdapter;
 
 use Application\Model\IndianStates;
 use Application\Model\IndianStatesTable;
-
 use Application\Model\Countries;
 use Application\Model\CountriesTable;
-
 use Application\Model\EmailRelayer;
 use Application\Model\EmailRelayerTable;
+use Application\Model\EmailTemplates;
+use Application\Model\EmailTemplatesTable;
+
 
 class Module
 {
@@ -139,6 +140,21 @@ class Module
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new EmailRelayer());
                     return new TableGateway('email_relayer',$dbAdapter,null,$resultSetPrototype);
+                },
+                        
+                'Application\Model\EmailTemplatesTable' => function($sm)
+                {                                        
+                    $dbAdapter = $sm-> get('Zend\Db\Adapter\Adapter');
+                    $tableGateway = $sm->get('EmailTemplatesTableGateway');
+                    $table = new EmailTemplatesTable($dbAdapter,$tableGateway);
+                    return $table;
+                },
+                'EmailTemplatesTableGateway' => function($sm)
+                {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new EmailTemplates());
+                    return new TableGateway('email_templates',$dbAdapter,null,$resultSetPrototype);
                 }
            ),
         );

@@ -15,9 +15,9 @@ use Zend\Mail\Transport\Smtp as SmtpTransport;
 use Zend\Mail\Transport\SmtpOptions;
 
 
-use Users\Model\Users;
+/*use Users\Model\Users;
 use Users\Model\UsersTable;
-use Users\Model\RPAuthStorage;
+use Users\Model\RPAuthStorage;*/
 
 use Users\Form\AddNewUserForm;
 
@@ -136,9 +136,12 @@ class IndexController extends AbstractActionController
             {
                 $emailRelayerTable = $sm-> get('Application\Model\EmailRelayerTable');        
                 $emailRelayerData = $emailRelayerTable->getRelaierData($fromEmail);                                
-                        
-                $emailSubject = 'Reset Password';            
-                $emailBody = 'hello';
+                
+                $emailTemplatesTable = $sm-> get('Application\Model\EmailTemplatesTable');        
+                $emailBodyData = $emailTemplatesTable->getEmailTemplateDetails('forgot-password');               
+                
+                $emailSubject = $emailBodyData->emailSubject;            
+                $emailBody = $emailBodyData->emailBody;
             
                 $relayerHost = $emailRelayerData->relayerHost;
                 $relayerSsl = $emailRelayerData->relayerSsl;
