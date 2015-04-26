@@ -198,10 +198,18 @@ class IndexController extends AbstractActionController
         $ResetPasswordTable = $sm-> get('Users\Model\ResetPasswordTable');        
         $ResetPasswordData = $ResetPasswordTable->getResetKeyDetails($resetKey);
         
-        $usersTable = $sm-> get('Users\Model\UsersTable');        
-        $usersData = $usersTable->getUsersDetails($ResetPasswordData->userEmail);
+        if($ResetPasswordData)
+        {
+            $usersTable = $sm-> get('Users\Model\UsersTable');        
+            $usersData = $usersTable->getUsersDetails($ResetPasswordData->userEmail);
+            $message = '';
+        }
+        else
+        {
+            $message = 'Key is not valid';
+        }
         
-        $view = new ViewModel(array('usersData'=>$usersData));
+        $view = new ViewModel(array('userName'=>$usersData->userName, 'resetKey'=>$resetKey, 'message'=>$message));
         $view->setTerminal(true);
         return $view;
     }
